@@ -1,0 +1,2 @@
+-Para cada simulção deve haver uma tabela de produção.
+-Na tabela de produção deve haver a tabela de simulações.

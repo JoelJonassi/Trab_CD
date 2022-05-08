@@ -1,10 +1,15 @@
-﻿namespace JobShopAPI.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace JobShopAPI.Models
 {
     public class Simulation
     {
-        public Machine Machines { get; set; }
-        public Operation Operations{ get; set; }
-        public Job Jobs { get; set; }
+        [Key]
+        public int IdSimulation { get; set; }   
+        public Machine Machine { get; set; }
+        public Operation Operation{ get; set; }
+        public ICollection<Job> Jobs { get; set; }
 
     }
 }

@@ -4,6 +4,7 @@ using JobShopAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobShopAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220502191029_SimulationToDb1")]
+    partial class SimulationToDb1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.4")
+                .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -109,27 +111,6 @@ namespace JobShopAPI.Migrations
                     b.ToTable("Simulations");
                 });
 
-            modelBuilder.Entity("JobShopAPI.Models.Time", b =>
-                {
-                    b.Property<int>("IdTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTime"), 1L, 1);
-
-                    b.Property<int?>("JobIdJob")
-                        .HasColumnType("int");
-
-                    b.Property<int>("time")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdTime");
-
-                    b.HasIndex("JobIdJob");
-
-                    b.ToTable("Time");
-                });
-
             modelBuilder.Entity("JobShopAPI.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -188,18 +169,9 @@ namespace JobShopAPI.Migrations
                     b.Navigation("Operation");
                 });
 
-            modelBuilder.Entity("JobShopAPI.Models.Time", b =>
-                {
-                    b.HasOne("JobShopAPI.Models.Job", null)
-                        .WithMany("times")
-                        .HasForeignKey("JobIdJob");
-                });
-
             modelBuilder.Entity("JobShopAPI.Models.Job", b =>
                 {
                     b.Navigation("Operations");
-
-                    b.Navigation("times");
                 });
 
             modelBuilder.Entity("JobShopAPI.Models.Simulation", b =>

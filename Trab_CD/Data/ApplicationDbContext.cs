@@ -15,6 +15,7 @@ namespace JobShopAPI.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Simulation> Simulations { get; set; }
 
     }
 }

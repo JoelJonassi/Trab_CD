@@ -1,5 +1,6 @@
 using JobShopAPI;
 using JobShopAPI.Data;
+using JobShopAPI.Mapping;
 using JobShopAPI.ParkyMapper;
 using JobShopAPI.Repository;
 using JobShopAPI.Repository.IRepository;
@@ -26,11 +27,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-
+builder.Services.AddMvc(options =>
+{
+    options.SuppressAsyncSuffixInActionNames = false;
+});
 
 
 
 builder.Services.AddScoped<IUserRepository, UserRepository>(); //To acess National park repository in any of the other controllers
+builder.Services.AddScoped<ISimulationRepository,SimulationRepository>();
+builder.Services.AddAutoMapper(typeof(Mapping));
 //builder.Services.AddAutoMapper(typeof(ParkyMappings)); // add all mappings
 
 

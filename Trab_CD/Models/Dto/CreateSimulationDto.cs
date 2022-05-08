@@ -1,10 +1,11 @@
 ﻿namespace JobShopAPI.Models.Dto
 {
-    public class SimulationDto
-    {
+    public class CreateSimulationDto {
+
         public int IdSimulation { get; set; }
         public Machine Machine { get; set; }
         public Operation Operation { get; set; }
-        public List<Job> Jobs { get; set; }
+        public ICollection<Job> Jobs { get; set; }
     }
+
 }

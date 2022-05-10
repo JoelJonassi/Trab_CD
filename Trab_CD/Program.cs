@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //Get connectionString
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection2");
 
 builder.Services.AddControllers();
 

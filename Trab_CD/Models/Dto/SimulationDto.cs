@@ -3,8 +3,7 @@
     public class SimulationDto
     {
         public int IdSimulation { get; set; }
-        public Machine Machine { get; set; }
-        public Operation Operation { get; set; }
-        public List<Job> Jobs { get; set; }
+        public string NameSimulation { get; set; }
+        public int IdJob { get; set; }
     }
 }

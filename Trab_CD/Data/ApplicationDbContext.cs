@@ -12,10 +12,18 @@ namespace JobShopAPI.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            //Cria a relação de muitos para muitos
+            builder.Entity<Operation>()
+               .HasMany(b => b.Machines)
+                .WithMany(c => c.Operations);
+
         }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Simulation> Simulations { get; set; }
-
+        public DbSet<Job> Jobs { get; set; }
+        public DbSet <Machine> Machines { get; set; }
+        public DbSet<Operation> Operations { get; set; }
     }
 }

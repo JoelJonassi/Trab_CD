@@ -6,10 +6,12 @@ namespace JobShopAPI.Models
     public class Simulation
     {
         [Key]
-        public int IdSimulation { get; set; }   
-        public Machine Machine { get; set; }
-        public Operation Operation{ get; set; }
-        public ICollection<Job> Jobs { get; set; }
+        public int IdSimulation { get; set; }
+        public string NameSimulation { get; set; }
+        [Required]
+        public int IdJob { get; set; }
+        [ForeignKey("IdJob")]
+        public Job Job { get; set; }
 
     }
 }

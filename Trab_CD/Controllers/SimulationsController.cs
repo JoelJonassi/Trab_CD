@@ -80,7 +80,7 @@ namespace JobShopAPI.Controllers
             {
                 return BadRequest(ModelState); //Model State contém todos erros que são encontrados
             }
-            if (_simuRepo.SimulationExists(simulationDto.IdSimulation)) // exists?
+            if (_simuRepo.SimulationExists(simulationDto.NameSimulation)) // exists?
             {
                 ModelState.AddModelError("", "Simulation Exists");
                 return StatusCode(404, ModelState);

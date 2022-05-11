@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobShopAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220510002309_dbOperationMachineJob")]
-    partial class dbOperationMachineJob
+    [Migration("20220511001745_db123")]
+    partial class db123
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,7 +53,10 @@ namespace JobShopAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdMachine"), 1L, 1);
 
-                    b.Property<string>("MachineÑame")
+                    b.Property<int>("IdOperation")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MachineName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -96,6 +99,12 @@ namespace JobShopAPI.Migrations
                     b.Property<int>("IdJob")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdMachine")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdOperation")
+                        .HasColumnType("int");
+
                     b.Property<string>("NameSimulation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -103,6 +112,10 @@ namespace JobShopAPI.Migrations
                     b.HasKey("IdSimulation");
 
                     b.HasIndex("IdJob");
+
+                    b.HasIndex("IdMachine");
+
+                    b.HasIndex("IdOperation");
 
                     b.ToTable("Simulations");
                 });
@@ -163,10 +176,26 @@ namespace JobShopAPI.Migrations
                     b.HasOne("JobShopAPI.Models.Job", "Job")
                         .WithMany()
                         .HasForeignKey("IdJob")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("JobShopAPI.Models.Machine", "Machine")
+                        .WithMany()
+                        .HasForeignKey("IdMachine")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("JobShopAPI.Models.Operation", "Operation")
+                        .WithMany()
+                        .HasForeignKey("IdOperation")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Job");
+
+                    b.Navigation("Machine");
+
+                    b.Navigation("Operation");
                 });
 
             modelBuilder.Entity("MachineOperation", b =>

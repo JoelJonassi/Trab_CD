@@ -1,8 +1,8 @@
 using JobShopAPI;
 using JobShopAPI.Data;
 using JobShopAPI.Mapping;
-using JobShopAPI.ParkyMapper;
 using JobShopAPI.Repository;
+using JobShopAPI.Repository.Interfaces;
 using JobShopAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +36,11 @@ builder.Services.AddMvc(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>(); //To acess National park repository in any of the other controllers
 builder.Services.AddScoped<ISimulationRepository,SimulationRepository>();
+builder.Services.AddScoped<IJobRepository, JobRepository>();
+builder.Services.AddScoped<IOperationRepository, OperationRepository>();
+builder.Services.AddScoped<IMachineRepository, MachineRepository>();
 builder.Services.AddAutoMapper(typeof(Mapping));
+
 //builder.Services.AddAutoMapper(typeof(ParkyMappings)); // add all mappings
 
 

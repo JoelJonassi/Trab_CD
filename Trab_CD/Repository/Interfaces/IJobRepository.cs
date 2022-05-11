@@ -4,10 +4,13 @@ namespace JobShopAPI.Repository.Interfaces
 {
     public interface IJobRepository
     {
-        //Serviço de tabela de produção
-        bool AddOperationInJob(Job job, Operation operation);
-        bool DeleteOperationInJob(Job job, Operation operation);
-        bool UpdateOperationInJob(Job job, Operation operation);
-        bool DeleteJob(Job job);
+        bool JobExists(string NameSimulation);
+        bool JobExists(int IdSimulation);
+        ICollection<Job> GetJobs();
+        Job GetJob(int IdSimulation);
+        bool CreateJob(Job simulation);
+        bool UpdateJob(Job simulation);
+        bool DeleteJob(Job simulation);
+        bool Save();
     }
 }

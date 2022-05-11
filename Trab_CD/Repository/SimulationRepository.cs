@@ -34,9 +34,19 @@ namespace JobShopAPI.Repository
         /// </summary>
         /// <param name="idSimulation"></param>
         /// <returns></returns>
-        public bool SimulationExists(int idSimulation)
+        public bool SimulationExists(string NameSimulation)
         {
-            return _db.Simulations.Any(simu => simu.IdSimulation == idSimulation);
+            return _db.Simulations.Any(simu => simu.NameSimulation == NameSimulation);
+        }
+
+        /// <summary>
+        /// Função que verifica se a simulação já existe
+        /// </summary>
+        /// <param name="idSimulation"></param>
+        /// <returns></returns>
+        public bool SimulationExists(int IdSimulation)
+        {
+            return _db.Simulations.Any(simu => simu.IdSimulation == IdSimulation);
         }
 
         /// <summary>

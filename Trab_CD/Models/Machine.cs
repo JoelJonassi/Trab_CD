@@ -7,7 +7,9 @@ namespace JobShopAPI.Models
     {
         [Key]
         public int IdMachine {get; set;}
-        public string MachineÑame { get; set;}
+        [Required]
+        public string MachineName { get; set;}
+        public int IdOperation { get; set; }
         [ForeignKey("IdOperation")]
         public ICollection<Operation> Operations { get; set; }
     }

@@ -5,6 +5,7 @@ namespace JobShopAPI.Repository.IRepository
 {
     public interface ISimulationRepository
     {
+        bool SimulationExists(string NameSimulation);
         bool SimulationExists(int IdSimulation);
         ICollection<Simulation> GetSimulations();
         Simulation GetSimulation(int IdSimulation);

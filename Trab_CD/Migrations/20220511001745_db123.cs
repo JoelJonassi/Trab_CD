@@ -4,7 +4,7 @@
 
 namespace JobShopAPI.Migrations
 {
-    public partial class dbOperationMachineJob : Migration
+    public partial class db123 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,8 @@ namespace JobShopAPI.Migrations
                 {
                     IdMachine = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MachineÑame = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    MachineName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdOperation = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -102,7 +103,9 @@ namespace JobShopAPI.Migrations
                     IdSimulation = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NameSimulation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdJob = table.Column<int>(type: "int", nullable: false)
+                    IdJob = table.Column<int>(type: "int", nullable: false),
+                    IdOperation = table.Column<int>(type: "int", nullable: false),
+                    IdMachine = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -111,8 +114,17 @@ namespace JobShopAPI.Migrations
                         name: "FK_Simulations_Jobs_IdJob",
                         column: x => x.IdJob,
                         principalTable: "Jobs",
-                        principalColumn: "IdJob",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdJob");
+                    table.ForeignKey(
+                        name: "FK_Simulations_Machines_IdMachine",
+                        column: x => x.IdMachine,
+                        principalTable: "Machines",
+                        principalColumn: "IdMachine");
+                    table.ForeignKey(
+                        name: "FK_Simulations_Operations_IdOperation",
+                        column: x => x.IdOperation,
+                        principalTable: "Operations",
+                        principalColumn: "IdOperation");
                 });
 
             migrationBuilder.CreateIndex(
@@ -129,6 +141,16 @@ namespace JobShopAPI.Migrations
                 name: "IX_Simulations_IdJob",
                 table: "Simulations",
                 column: "IdJob");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Simulations_IdMachine",
+                table: "Simulations",
+                column: "IdMachine");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Simulations_IdOperation",
+                table: "Simulations",
+                column: "IdOperation");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -143,10 +165,10 @@ namespace JobShopAPI.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Machines");
+                name: "Jobs");
 
             migrationBuilder.DropTable(
-                name: "Jobs");
+                name: "Machines");
 
             migrationBuilder.DropTable(
                 name: "Operations");

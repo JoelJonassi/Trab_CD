@@ -1,4 +1,5 @@
 ﻿using JobShopAPI.Models;
+using JobShopAPI.Models.Dto;
 using JobShopAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,14 +25,16 @@ namespace JobShopAPI.Controllers
 
         }
 
+
+        
         /// <summary>
-        /// 
+        /// Iniciar a Sessão do Utilizador
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] User model)
+        public IActionResult Authenticate([FromBody] LoginUserDto model)
         {
             var user = _userRepo.Authenticate(model.Username, model.Password);
             if (user == null)
@@ -42,13 +45,13 @@ namespace JobShopAPI.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Registar Utilizador
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] User model)
+        public IActionResult Register([FromBody] CreateUserDto model)
         {
             bool ifUserNameUnique = _userRepo.IsUniqueUser(model.Username);
             if (!ifUserNameUnique)

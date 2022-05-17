@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 /// </summary>
 namespace JobShopAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Simulations")]
     [ApiController]
     public class SimulationsController : ControllerBase
     {

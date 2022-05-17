@@ -1,0 +1,30 @@
+﻿
+<div class="p-4" style="border-radius:20px;">
+		<div class="row">
+			<div class="col-6">
+				<h2 class="text-info">Serviço de plano de Produção</h2>
+
+			</div>
+			<div class="col-6 text-right">
+				<a asp-action="Upsert" asp-controller = "ProductionTableService" class="btn btn-info text-white"><i class="fas fa-plus"></i> &nbsp; Inserir Operação na Tabela</a>
+
+			</div>
+		</div>
+		<br />
+		<br />
+
+		<table id="tblData" class="table table-striped table-bordered" style="width:100%">
+			<thead>
+				<tr>
+					<th>Jobs</th>
+					<th>Operation1</th>
+					<th>Operation2</th>
+					<th>Operation3</th>
+					<th>Operation4</th>
+				</tr>
+			</thead>
+		</table>
+</div>
+@section Scripts {
+	<script src="~/js/ProductionTableService.js"></script>
+}

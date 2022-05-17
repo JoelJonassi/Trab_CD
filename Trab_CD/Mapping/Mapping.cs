@@ -2,7 +2,7 @@
 using JobShopAPI.Models;
 using JobShopAPI.Models.Dto;
 
-namespace JobShopAPI.Mapping
+namespace JobShopAPI.Mappings
 {
     public class Mapping : Profile
     {
@@ -20,6 +20,8 @@ namespace JobShopAPI.Mapping
             CreateMap<Machine, CreateMachineDto>().ReverseMap();
             CreateMap<Machine, MachineDto>().ReverseMap();
             CreateMap<Machine, UpdateMachineDto>().ReverseMap();
+            CreateMap<User,CreateUserDto>().ReverseMap();
+            CreateMap<User, LoginUserDto>().ReverseMap();
         }
        
     }

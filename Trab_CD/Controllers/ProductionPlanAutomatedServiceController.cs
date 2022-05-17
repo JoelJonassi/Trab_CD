@@ -4,9 +4,9 @@
 
 namespace JobShopAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/PPAutomatedService")]
     [ApiController]
-    public class ProductionPlanAutomatedService : ControllerBase
+    public class ProductionPlanAutomatedServiceController : ControllerBase
     {
         // GET: api/<ProductionPlanAutomatedService>
         [HttpGet]

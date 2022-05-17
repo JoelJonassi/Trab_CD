@@ -3,10 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JobShopAPI.Models.Dto
 {
-    public class MachineDto
+    public class LoginUserDto
     {
-        public int IdMachine { get; set; }
-        [Required]
-        public string MachineName { get; set; }
+
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+
     }
 }

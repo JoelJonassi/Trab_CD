@@ -87,7 +87,7 @@ namespace JobShopAPI.Repository
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
-            user.Password = "";
+            //user.Password = "";
             return user;
 
         }

@@ -1,0 +1,385 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JobShopAPI</name>
+    </assembly>
+    <members>
+        <member name="M:JobShopAPI.Controllers.ProductionTableServiceController.GetTable">
+            <summary>
+            Get List of Simulations
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.ProductionTableServiceController.InsertMachineInOperation(System.Int32,JobShopAPI.Models.Dto.CreateMachineDto)">
+            <summary>
+            Cria máquina para determinada operação e insere o tempo na operação
+            </summary>
+            <param name="machineDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.ProductionTableServiceController.UpdateMachine(System.Int32,JobShopAPI.Models.Dto.UpdateMachineDto)">
+            <summary>
+            Update
+            </summary>
+            <param name="IdMachine"></param>
+            <param name="machineDto">Copy of nationalParkId</param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.ProductionTableServiceController.DeleteMachine(System.Int32)">
+            <summary>
+            delete
+            </summary>
+            <param name="nationalParkId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.SimulationsController.GetSimulations">
+            <summary>
+            Get List of Simulations
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.SimulationsController.CreateSimulation(JobShopAPI.Models.Dto.CreateSimulationDto)">
+            <summary>
+            Cria simulação
+            </summary>
+            <param name="simulationDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.SimulationsController.DeleteSimulation(System.Int32)">
+            <summary>
+            delete
+            </summary>
+            <param name="nationalParkId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.UsersController.Authenticate(JobShopAPI.Models.Dto.LoginUserDto)">
+            <summary>
+            Iniciar a Sessão do Utilizador
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.UsersController.Register(JobShopAPI.Models.Dto.CreateUserDto)">
+            <summary>
+            Registar Utilizador
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.UsersController.UpdateUser(JobShopAPI.Models.User)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Controllers.UsersController.DeleteUser(JobShopAPI.Models.User)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.JobRepository.CreateJob(JobShopAPI.Models.Job)">
+            <summary>
+            Função que cria uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.JobRepository.JobExists(System.String)">
+            <summary>
+            Função que verifica se a simulação já existe
+            </summary>
+            <param name="idSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.JobRepository.JobExists(System.Int32)">
+            <summary>
+            Função que verifica se a simulação já existe
+            </summary>
+            <param name="idSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.JobRepository.GetJobs">
+            <summary>
+            Função que mostra todas as simulações
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.JobRepository.GetJob(System.Int32)">
+            <summary>
+            Função que mostra uma simulação
+            </summary>
+            <param name="IdSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.JobRepository.UpdateJob(JobShopAPI.Models.Job)">
+            <summary>
+            Função que atualiza uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.JobRepository.DeleteJob(JobShopAPI.Models.Job)">
+            <summary>
+            Função que apaga uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.JobRepository.Save">
+            <summary>
+            Função que guarda uma simulação
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.MachineRepository.CreateMachine(JobShopAPI.Models.Machine)">
+            <summary>
+            Função que cria uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.MachineRepository.MachineExists(System.String)">
+            <summary>
+            Função que verifica se a simulação já existe
+            </summary>
+            <param name="idSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.MachineRepository.MachineExists(System.Int32)">
+            <summary>
+            Função que verifica se a simulação já existe
+            </summary>
+            <param name="idSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.MachineRepository.GetMachines">
+            <summary>
+            Função que mostra todas as simulações
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.MachineRepository.GetMachine(System.Int32)">
+            <summary>
+            Função que mostra uma simulação
+            </summary>
+            <param name="IdSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.MachineRepository.UpdateMachine(JobShopAPI.Models.Machine)">
+            <summary>
+            Função que atualiza uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.MachineRepository.DeleteMachine(JobShopAPI.Models.Machine)">
+            <summary>
+            Função que apaga uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.Interfaces.MachineRepository.Save">
+            <summary>
+            Função que guarda uma simulação
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.OperationRepository.CreateOperation(JobShopAPI.Models.Operation)">
+            <summary>
+            Função que cria uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.OperationRepository.OperationExists(System.String)">
+            <summary>
+            Função que verifica se a simulação já existe
+            </summary>
+            <param name="idSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.OperationRepository.OperationExists(System.Int32)">
+            <summary>
+            Função que verifica se a simulação já existe
+            </summary>
+            <param name="idSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.OperationRepository.GetOperations">
+            <summary>
+            Função que mostra todas as simulações
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.OperationRepository.GetOperation(System.Int32)">
+            <summary>
+            Função que mostra uma simulação
+            </summary>
+            <param name="IdSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.OperationRepository.UpdateOperation(JobShopAPI.Models.Operation)">
+            <summary>
+            Função que atualiza uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.OperationRepository.DeleteOperation(JobShopAPI.Models.Operation)">
+            <summary>
+            Função que apaga uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.OperationRepository.Save">
+            <summary>
+            Função que guarda uma simulação
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.SimulationRepository.CreateSimulation(JobShopAPI.Models.Simulation)">
+            <summary>
+            Função que cria uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.SimulationRepository.SimulationExists(System.String)">
+            <summary>
+            Função que verifica se a simulação já existe
+            </summary>
+            <param name="idSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.SimulationRepository.SimulationExists(System.Int32)">
+            <summary>
+            Função que verifica se a simulação já existe
+            </summary>
+            <param name="idSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.SimulationRepository.GetSimulations">
+            <summary>
+            Função que mostra todas as simulações
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.SimulationRepository.GetSimulation(System.Int32)">
+            <summary>
+            Função que mostra uma simulação
+            </summary>
+            <param name="IdSimulation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.SimulationRepository.UpdateSimulation(JobShopAPI.Models.Simulation)">
+            <summary>
+            Função que atualiza uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.SimulationRepository.DeleteSimulation(JobShopAPI.Models.Simulation)">
+            <summary>
+            Função que apaga uma simulação
+            </summary>
+            <param name="simulation"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.SimulationRepository.Save">
+            <summary>
+            Função que guarda uma simulação
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.#ctor(JobShopAPI.Data.ApplicationDbContext,Microsoft.Extensions.Options.IOptions{JobShopAPI.AppSettings})">
+            <summary>
+            
+            </summary>
+            <param name="db"></param>
+        </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.UpdateUser(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="username"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.IsUniqueUser(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="username"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.Authenticate(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="username"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.Register(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="username"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.DeleteUser(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="usernmae"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.UpdateUser(JobShopAPI.Models.User)">
+            <summary>
+            
+            </summary>
+            <param name="username"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.Save">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.GetUser(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+    </members>
+</doc>

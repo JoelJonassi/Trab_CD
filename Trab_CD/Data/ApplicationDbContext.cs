@@ -18,7 +18,7 @@ namespace JobShopAPI.Data
             builder.Entity<Operation>()
              .HasMany(b => b.Machines)
              .WithMany(c => c.Operations);
-
+            /*
             builder.Entity<Simulation>()
             .HasOne(e => e.Machine)
             .WithMany()
@@ -34,7 +34,7 @@ namespace JobShopAPI.Data
             .HasOne(e => e.Job)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);   
-            
+            */
 
 
         }

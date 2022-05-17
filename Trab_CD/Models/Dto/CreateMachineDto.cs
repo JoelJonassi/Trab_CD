@@ -10,5 +10,6 @@ namespace JobShopAPI.Models.Dto
         [Required]
         [ForeignKey("IdOperation")]
         public int IdOperation{ get; set; }
+        public int Time { get; set; }
     }
 }

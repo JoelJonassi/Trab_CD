@@ -14,8 +14,10 @@ function loadDataTable() {
         "columns": [
             { "data": "idSimulation", "width": "30%" },
             { "data": "nameSimulation", "width": "30%" },
-            { "data": "nameJob", "width": "20%" },
-            { "data": "machineName", "width": "30%" },
+            { "data": "idJob", "width": "20%" },
+            { "data": "idMachine", "width": "30%" },
+            { "data": "idOperation", "width": "30%" },
+            { "data": "time", "width": "30%" },
             {
                 "data": "idSimulation",
                 "render": function (data) {

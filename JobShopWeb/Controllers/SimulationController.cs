@@ -1,11 +1,13 @@
 ﻿using JobShopWeb.Models;
 using JobShopWeb.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace JobShopWeb.Controllers
 {
+    [Authorize]
     public class SimulationController : Controller
     {
         private readonly ISimulationRepository _simu;

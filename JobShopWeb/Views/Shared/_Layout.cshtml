@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - JobShopWeb</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
      <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
@@ -16,9 +16,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-success mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">JobShopWeb</a>
+                <a class="navbar-brand text-white-50" asp-area="" asp-controller="Home" asp-action="Index">JobShopWeb</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,25 +28,28 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                             @if (httpAcc.HttpContext.Session.GetString("JWToken") != null &&
-                            httpAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
-                        {
-                           
+                             
+                         @if(User.IsInRole("Admin") || User.IsInRole("JoelJonassi"))
+                         {
                          <li class="nav-item">
                             <a class="nav-link text-dark"  asp-controller="Simulation" asp-action="Index">Simulations</a>
                         </li>
+                         }
+                        @if (httpAcc.HttpContext.Session.GetString("JWToken") != null &&
+                            httpAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
+                        {
                          <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Logout">Logout</a>
+                                <a class="nav-link text-white" asp-controller="Home" asp-action="Logout">Logout</a>
 
                             </li>
                         
                         }
                         else {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Login">Login</a>
+                                <a class="nav-link text-white" asp-controller="Home" asp-action="Login">Login</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Register">Register</a>
+                                <a class="nav-link text-white" asp-controller="Home" asp-action="Register">Register</a>
                             </li>
                         }
 
@@ -58,13 +61,22 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+             @if (TempData["alert"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["alert"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>  
+            }
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - JobShopWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2022 - JobShopWeb by Joel Jonassi - <a asp-area="" asp-controller="Home" asp-action="Privacy"></a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

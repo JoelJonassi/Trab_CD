@@ -1,6 +1,7 @@
 using JobShopAPI.Repository.Interfaces;
 using JobShopWeb.Repository;
 using JobShopWeb.Repository.IRepository;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -27,6 +28,16 @@ namespace JobShopWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.Cookie.HttpOnly = true;
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                    options.LoginPath = "/Home/Login";
+                    options.AccessDeniedPath = "/Home/AccessDenied";
+                    options.SlidingExpiration = true;
+                });
+
             services.AddScoped<IMachineRepository, MachineRepository>();
             services.AddScoped<IJobRepository, JobRepository>();
             services.AddScoped<IOperationRepository, OperationRepository>();
@@ -68,8 +79,9 @@ namespace JobShopWeb
 
             app.UseSession();
 
-            app.UseAuthorization();
-            app.UseAuthentication();
+            app.UseAuthentication(); //primeiro
+            app.UseAuthorization(); //ultimo
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

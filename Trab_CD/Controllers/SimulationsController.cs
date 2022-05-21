@@ -45,8 +45,12 @@ namespace JobShopAPI.Controllers
             return Ok(objList);
         }
 
-        
-        [HttpGet("{simulationId:int}", Name = "GetSimulation")]
+        /// <summary>
+        /// Busca de simulação pelo Id
+        /// </summary>
+        /// <param name="simulationId"></param>
+        /// <returns></returns>
+        [HttpGet("{IdSimulation:int}", Name = "GetSimulation")]
         [ProducesResponseType(200, Type = typeof(List<SimulationDto>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -64,7 +68,7 @@ namespace JobShopAPI.Controllers
         }
 
         /// <summary>
-        /// Cria simulação
+        /// Criar uma simulação
         /// </summary>
         /// <param name="simulationDto"></param>
         /// <returns></returns>
@@ -100,8 +104,13 @@ namespace JobShopAPI.Controllers
         }
 
         
-
-        [HttpPatch("{idSimulation:int}", Name = "UpdateSimulation")]
+        /// <summary>
+        /// Atualizar uma simulação
+        /// </summary>
+        /// <param name="simulationId"></param>
+        /// <param name="nationalParkDto"></param>
+        /// <returns></returns>
+        [HttpPatch("{IdSimulation:int}", Name = "UpdateSimulation")]
         [ProducesResponseType(204, Type = typeof(List<SimulationDto>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -122,25 +131,25 @@ namespace JobShopAPI.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// delete
-        /// </summary>
-        /// <param name="nationalParkId"></param>
-        /// <returns></returns>
-        [HttpDelete("{idSimulation:int}", Name = "DeleteSimulation")]
+       /// <summary>
+       /// Apagar uma simulação
+       /// </summary>
+       /// <param name="simulationId"></param>
+       /// <returns></returns>
+        [HttpDelete("{IdSimulation:int}", Name = "DeleteSimulation")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public IActionResult DeleteSimulation(int simulationId)
         {
-            if (!_simuRepo.SimulationExists(simulationId)) //If not found
+            if (!_simuRepo.SimulationExists(simulationId)) 
             {
                 return NotFound();
             }
             else
             {
-                var simulationObj = _simuRepo.GetSimulation(simulationId);  //Map objectt
+                var simulationObj = _simuRepo.GetSimulation(simulationId); 
 
                 if (!_simuRepo.DeleteSimulation(simulationObj))
                 {
@@ -149,7 +158,7 @@ namespace JobShopAPI.Controllers
                 }
 
             }
-            return NoContent(); // if not receive any content the park was deleted.
+            return NoContent();
         }
     }
 

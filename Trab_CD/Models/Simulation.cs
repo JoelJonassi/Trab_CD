@@ -22,5 +22,8 @@ namespace JobShopAPI.Models
         [ForeignKey("IdMachine")]
         public Machine Machine { get; set; }
 
+       /* public int Id { get; set; }
+        [ForeignKey("Id")]
+        public User user { get; set; }*/
     }
 }

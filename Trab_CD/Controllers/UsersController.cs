@@ -67,19 +67,26 @@ namespace JobShopAPI.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Alterar palavra passe
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         [HttpPatch("update")]
-        public IActionResult UpdateUser([FromBody] User model)
+        public IActionResult ChangePasswordUser([FromBody] ChangePasswordUserDto model)
         {
-            throw new NotImplementedException();
+            
+            bool ifUserNameUnique = _userRepo.IsUniqueUser(model.Username);
+            if (ifUserNameUnique)
+            {
+                var user = _userRepo.ChangePasswordUser(model.Username, model.OldPassword, model.NewPassword);
+                return Ok(user);
+            }
+            return BadRequest(new { message = "Erro na alteração da palavra passe" });
         }
 
         /// <summary>
-        /// 
+        /// Eliminar utilizador
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>

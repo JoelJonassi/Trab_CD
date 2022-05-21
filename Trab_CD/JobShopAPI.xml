@@ -4,32 +4,96 @@
         <name>JobShopAPI</name>
     </assembly>
     <members>
-        <member name="M:JobShopAPI.Controllers.ProductionTableServiceController.GetTable">
+        <member name="M:JobShopAPI.Controllers.JobsController.GetJobs">
             <summary>
-            Get List of Simulations
+            Buscar todos os trabalhos
             </summary>
             <returns></returns>
         </member>
-        <member name="M:JobShopAPI.Controllers.ProductionTableServiceController.InsertMachineInOperation(System.Int32,JobShopAPI.Models.Dto.CreateMachineDto)">
+        <member name="M:JobShopAPI.Controllers.JobsController.GetJob(System.Int32)">
             <summary>
-            Cria máquina para determinada operação e insere o tempo na operação
+            Buscar trabalho pelo Id
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.JobsController.CreateJob(JobShopAPI.Models.Dto.CreateJobDto)">
+            <summary>
+            Criar trabalho
+            </summary>
+            <param name="jobDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.JobsController.UpdateJob(System.Int32,JobShopAPI.Models.Dto.JobDto)">
+            <summary>
+            Atualizar trabalho
+            </summary>
+            <param name="jobId"></param>
+            <param name="jobDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.JobsController.DeleteJob(System.Int32)">
+            <summary>
+            Apagar trabalho
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.MachineController.UpdateMachine(System.Int32,JobShopAPI.Models.Dto.UpdateMachineDto)">
+            <summary>
+            Atualiza máquina
+            </summary>
+            <param name="IdMachine"></param>
+            <param name="machineDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.MachineController.InsertMachineInOperation(System.Int32,JobShopAPI.Models.Dto.CreateMachineDto)">
+            <summary>
+            Insere operação na máquina
             </summary>
             <param name="machineDto"></param>
             <returns></returns>
         </member>
-        <member name="M:JobShopAPI.Controllers.ProductionTableServiceController.UpdateMachine(System.Int32,JobShopAPI.Models.Dto.UpdateMachineDto)">
+        <member name="M:JobShopAPI.Controllers.MachineController.DeleteMachine(System.Int32)">
             <summary>
-            Update
+            Elimina uma máquina
             </summary>
             <param name="IdMachine"></param>
-            <param name="machineDto">Copy of nationalParkId</param>
             <returns></returns>
         </member>
-        <member name="M:JobShopAPI.Controllers.ProductionTableServiceController.DeleteMachine(System.Int32)">
+        <member name="M:JobShopAPI.Controllers.OperationsController.GetOperations">
             <summary>
-            Elimanar máquina da lista
+            Buscar todas as operações existentes
             </summary>
-            <param name="IdMachine"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.OperationsController.GetOperation(System.Int32)">
+            <summary>
+            Buscar operação pelo Id
+            </summary>
+            <param name="IdOperation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.OperationsController.CreateSimulation(JobShopAPI.Models.Dto.CreateOperationDto)">
+            <summary>
+            Criar Simulação
+            </summary>
+            <param name="simulationDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.OperationsController.UpdateOperation(System.Int32,JobShopAPI.Models.Dto.OperationDto)">
+            <summary>
+            Atualizar uma Simulação
+            </summary>
+            <param name="operationId"></param>
+            <param name="operationDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Controllers.OperationsController.DeleteOperation(System.Int32)">
+            <summary>
+            Apagar uma Simulação
+            </summary>
+            <param name="operationId"></param>
             <returns></returns>
         </member>
         <member name="M:JobShopAPI.Controllers.SimulationsController.GetSimulations">
@@ -38,18 +102,33 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:JobShopAPI.Controllers.SimulationsController.GetSimulation(System.Int32)">
+            <summary>
+            Busca de simulação pelo Id
+            </summary>
+            <param name="simulationId"></param>
+            <returns></returns>
+        </member>
         <member name="M:JobShopAPI.Controllers.SimulationsController.CreateSimulation(JobShopAPI.Models.Dto.CreateSimulationDto)">
             <summary>
-            Cria simulação
+            Criar uma simulação
             </summary>
             <param name="simulationDto"></param>
             <returns></returns>
         </member>
+        <member name="M:JobShopAPI.Controllers.SimulationsController.UpdateSimlation(System.Int32,JobShopAPI.Models.Dto.SimulationDto)">
+            <summary>
+            Atualizar uma simulação
+            </summary>
+            <param name="simulationId"></param>
+            <param name="nationalParkDto"></param>
+            <returns></returns>
+        </member>
         <member name="M:JobShopAPI.Controllers.SimulationsController.DeleteSimulation(System.Int32)">
             <summary>
-            delete
+            Apagar uma simulação
             </summary>
-            <param name="nationalParkId"></param>
+            <param name="simulationId"></param>
             <returns></returns>
         </member>
         <member name="M:JobShopAPI.Controllers.UsersController.Authenticate(JobShopAPI.Models.Dto.LoginUserDto)">
@@ -66,9 +145,9 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:JobShopAPI.Controllers.UsersController.UpdateUser(JobShopAPI.Models.User)">
+        <member name="M:JobShopAPI.Controllers.UsersController.ChangePasswordUser(JobShopAPI.Models.Dto.ChangePasswordUserDto)">
             <summary>
-            
+            Alterar palavra passe
             </summary>
             <param name="model"></param>
             <returns></returns>
@@ -76,7 +155,7 @@
         </member>
         <member name="M:JobShopAPI.Controllers.UsersController.DeleteUser(JobShopAPI.Models.User)">
             <summary>
-            
+            Eliminar utilizador
             </summary>
             <param name="model"></param>
             <returns></returns>
@@ -320,6 +399,22 @@
             </summary>
             <param name="db"></param>
         </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.GetUser(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.GetUser(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
         <member name="M:JobShopAPI.Repository.UserRepository.UpdateUser(System.String)">
             <summary>
             
@@ -351,7 +446,16 @@
             <param name="password"></param>
             <returns></returns>
         </member>
-        <member name="M:JobShopAPI.Repository.UserRepository.DeleteUser(System.String)">
+        <member name="M:JobShopAPI.Repository.UserRepository.ChangePasswordUser(System.String,System.String,System.String)">
+            <summary>
+            Mudar Password
+            </summary>
+            <param name="username"></param>
+            <param name="oldPassword"></param>
+            <param name="newPassword"></param>
+            <returns></returns>
+        </member>
+        <member name="M:JobShopAPI.Repository.UserRepository.DeleteUser(JobShopAPI.Models.User)">
             <summary>
             
             </summary>
@@ -372,14 +476,6 @@
             
             </summary>
             <returns></returns>
-        </member>
-        <member name="M:JobShopAPI.Repository.UserRepository.GetUser(System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="id"></param>
-            <returns></returns>
-            <exception cref="T:System.NotImplementedException"></exception>
         </member>
     </members>
 </doc>

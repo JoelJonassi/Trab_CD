@@ -6,9 +6,9 @@ namespace JobShopWeb.Models.ViewModel
     public class ProductionTableServiceVM
     {
 
-        public IEnumerable<SelectListItem> OperationList { get; set; }
+        public IEnumerable<Operation> OperationList { get; set; }
 
-        public IEnumerable<SelectListItem> MachineList { get; set; }
+        public IEnumerable<Machine> MachineList { get; set; }
 
         public IEnumerable<Job> JobList { get; set; }
     }

@@ -35,6 +35,29 @@ namespace JobShopAPI.Repository
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public User GetUser(string username)
+        {
+            return _db.Users.FirstOrDefault(user => user.Username == username);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public User GetUser(int idUser)
+        {
+            return _db.Users.FirstOrDefault(user => user.Id == idUser);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
@@ -113,14 +136,38 @@ namespace JobShopAPI.Repository
         }
 
         /// <summary>
+        /// Mudar Password
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        public bool ChangePasswordUser(string username, string oldPassword, string newPassword)
+        {
+            User userObj = GetUser(username);
+            if (userObj.Password == oldPassword)
+            {
+                userObj.Password = newPassword;
+                _db.Users.Add(userObj);
+                _db.SaveChanges();
+                userObj.Password = "";
+                return true;
+            }
+            return false;
+           
+
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="usernmae"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public User DeleteUser(string usernmae)
+        public bool DeleteUser(User user)
         {
-            throw new NotImplementedException();
+                _db.Users.Remove(user);
+                return Save();
         }
 
         /// <summary>
@@ -144,15 +191,8 @@ namespace JobShopAPI.Repository
             return _db.SaveChanges() >= 0 ? true : false;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public User GetUser(int id)
-        {
-            throw new NotImplementedException();
-        }
+       
+       
+
     }
 }

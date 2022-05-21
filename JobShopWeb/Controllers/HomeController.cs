@@ -105,7 +105,7 @@ namespace JobShopWeb.Controllers
                 return View();
             }
             //Caso o utiulizador tenha se registado deve ser redirecionado a página inicial.
-            TempData["alert"] = "Registado com Sucesso";
+            TempData["alert"] = "Registado com Sucesso!";
             return RedirectToAction("Login");
         }
 
@@ -120,8 +120,7 @@ namespace JobShopWeb.Controllers
 
         [HttpGet]
         public IActionResult AccessDenied()
-        {
-            
+        {           
             return View();
         }
     }

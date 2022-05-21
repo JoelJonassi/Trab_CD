@@ -1,8 +1,65 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model JobShopWeb.Models.ViewModel.IndexVM
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row pb-4 backgroundWhite">
+
+        @foreach (var simulation in Model.SimulationList)
+        {
+            <div class="container backgroundWhite pb-4">
+                <div class="card border">
+                    <div class="card-header bg-dark text-light ml-0 row container">
+                        <div class="col-12 col-md-6">
+                            <h1 class="text-warning">@simulation.NameSimulation</h1>
+                        </div>
+                        <div class="col-12 col-md-6 text-md-right">
+                            <h1 class="text-warning">Simulation Id : @simulation.IdSimulation</h1>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container rounded p-2">
+                            <div class="row">
+                                <div class="col-12 col-lg-8">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            @if (Model.SimulationList.Where(u => u.IdOperation == simulation.IdOperation).Count() > 0)
+                                            {
+                                                <table class="table table-striped" style="border:1px solid #808080 ">
+                                                    <tr class="table-secondary">
+                                                        <th>
+                                                            Simulation Name
+                                                        </th>
+                                                        <th>
+                                                            Simulation Id
+                                                        </th>
+                                                        <th>Job Id</th>
+                                                        <th>Machine Id</th>
+                                                        <th>Operation Id</th>
+                                                    </tr>
+                                                    @foreach (var simu in Model.SimulationList)
+                                                    {
+                                                <tr>
+                                                    <td>@simu.NameSimulation</td>
+                                                    <td>@simu.IdSimulation</td>
+                                                    <td>@simu.IdJob</td>
+                                                    <td>@simu.IdMachine</td>
+                                                    <td>@simu.IdOperation</td>
+                                                </tr>
+                                                    }
+                                                </table>
+                                            }
+                                            else
+                                            {
+                                                <p>No Simulation...</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                             
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

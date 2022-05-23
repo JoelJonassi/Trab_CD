@@ -7,25 +7,23 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/simulation/GetAllSimulations",
+            "url": "/user/GetAllUsers",
             "type": "GET",
             "datatype": "json"
         },
         "columns": [
-            { "data": "idSimulation", "width": "30%" },
-            { "data": "nameSimulation", "width": "30%" },
-            { "data": "idJob", "width": "20%" },
-            { "data": "idMachine", "width": "30%" },
-            { "data": "idOperation", "width": "30%" },
-            { "data": "idOperation", "width": "30%" },
+            { "data": "id", "width": "10%" },
+            { "data": "username", "width": "32%" },
+            { "data": "password", "width": "25%" },
+            { "data": "role", "width": "27%" },
             {
-                "data": "idSimulation",
+                "data": "id",
                 "render": function (data) {
                     return `<div class="text-center">
-                                <a href="/simulation/Upsert/${data}" class='btn btn-success text-white'
+                                <a href="/user/Upsert/${data}" class='btn btn-success text-white'
                                     style='cursor:pointer;'> <i class='far fa-edit'></i></a>
                                     &nbsp;
-                                <a onclick=Delete("/simulation/Delete/${data}") class='btn btn-danger text-white'
+                                <a onclick=Delete("/user/Delete/${data}") class='btn btn-danger text-white'
                                     style='cursor:pointer;'> <i class='far fa-trash-alt'></i></a>
                                 </div>
                            `;

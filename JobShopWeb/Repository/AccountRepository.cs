@@ -3,6 +3,7 @@ using JobShopWeb.Models;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -59,13 +60,13 @@ namespace JobShopWeb.Repository
         /// <param name="url"></param>
         /// <param name="objToCreate"></param>
         /// <returns></returns>
-        public async Task<bool> RegisterAsync(string url, User objToCreate)
+        public async Task<bool> RegisterAsync(string url, CreateUserDto objToCreate, string token ="")
         {
             var request = new HttpRequestMessage(HttpMethod.Post, url);
             if (objToCreate != null)
             {
                 request.Content = new StringContent(
-                    JsonConvert.SerializeObject(objToCreate), Encoding.UTF8, "application/json");
+                JsonConvert.SerializeObject(objToCreate), Encoding.UTF8, "application/json");
             }
             else
             {
@@ -73,6 +74,10 @@ namespace JobShopWeb.Repository
             }
 
             var client = _clientFactory.CreateClient();
+            if (token != null && token.Length != 0)
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
             HttpResponseMessage response = await client.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -85,5 +90,34 @@ namespace JobShopWeb.Repository
             }
         }
 
+        public async Task<bool> UpdateAsync(string url, UpdateUserDto objToUpdate, string token = "")
+        {
+            var request = new HttpRequestMessage(HttpMethod.Patch, url);
+            if (objToUpdate != null)
+            {
+                request.Content = new StringContent(JsonConvert.SerializeObject(objToUpdate), Encoding.UTF8, "application/json");
+            }
+            else
+            {
+                return false;
+            }
+            var client = _clientFactory.CreateClient();
+            if (token != null && token.Length != 0)
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+            HttpResponseMessage response = await client.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
+
+
+

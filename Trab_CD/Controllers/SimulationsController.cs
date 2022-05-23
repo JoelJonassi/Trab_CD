@@ -3,6 +3,7 @@ using AutoMapper;
 using JobShopAPI.Models;
 using JobShopAPI.Models.Dto;
 using JobShopAPI.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -13,6 +14,7 @@ namespace JobShopAPI.Controllers
 {
     [Route("api/Simulations")]
     [ApiController]
+    [Authorize]
     public class SimulationsController : ControllerBase
     {
 
@@ -33,6 +35,7 @@ namespace JobShopAPI.Controllers
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<SimulationDto>))]
         [ProducesResponseType(400)]
+        [AllowAnonymous]
         public IActionResult GetSimulations()
         {
             var objList = _simuRepo.GetSimulations();
@@ -55,7 +58,6 @@ namespace JobShopAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesDefaultResponseType]
-        //[Authorize]
         public IActionResult GetSimulation(int simulationId)
         {
             var obj = _simuRepo.GetSimulation(simulationId);
@@ -77,7 +79,6 @@ namespace JobShopAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
         public IActionResult CreateSimulation([FromBody] CreateSimulationDto simulationDto)
         {
             if (simulationDto == null)
@@ -114,7 +115,6 @@ namespace JobShopAPI.Controllers
         [ProducesResponseType(204, Type = typeof(List<SimulationDto>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
         public IActionResult UpdateSimlation(int simulationId, [FromBody] SimulationDto nationalParkDto)
         {
             if (nationalParkDto == null || simulationId != nationalParkDto.IdSimulation)

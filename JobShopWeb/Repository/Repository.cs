@@ -1,4 +1,5 @@
 ﻿using JobShopWeb.Repository.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -89,6 +90,7 @@ namespace JobShopWeb.Repository
 
         }
 
+        //[HttpGet("[controller]/[action]/{id}")]
         public async Task<T> GetAsync(string url, int id, string token = "")
         {
             var request = new HttpRequestMessage(HttpMethod.Get, url + id);

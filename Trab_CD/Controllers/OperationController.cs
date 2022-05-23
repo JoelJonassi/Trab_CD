@@ -12,6 +12,7 @@ namespace JobShopAPI.Controllers
 {
     [Route("api/Operations")]
     [ApiController]
+    [Authorize] //Só pode utilizar este controlador o utilizador que estiver autenticado
     public class OperationsController : ControllerBase
     {
 
@@ -56,7 +57,6 @@ namespace JobShopAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesDefaultResponseType]
-        [Authorize]
         public IActionResult GetOperation(int IdOperation)
         {
             var obj = _operation.GetOperation(IdOperation);
@@ -79,7 +79,6 @@ namespace JobShopAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
         public IActionResult CreateSimulation([FromBody] CreateOperationDto simulationDto)
         {
             if (simulationDto == null)
@@ -116,7 +115,6 @@ namespace JobShopAPI.Controllers
         [ProducesResponseType(204, Type = typeof(List<OperationDto>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-
         public IActionResult UpdateOperation(int operationId, [FromBody] OperationDto operationDto)
         {
             if (operationDto == null || operationId != operationDto.IdOperation)

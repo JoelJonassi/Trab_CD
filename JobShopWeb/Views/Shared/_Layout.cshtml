@@ -29,7 +29,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                              
-                         @if(User.IsInRole("Admin") || User.IsInRole("JoelJonassi"))
+                         @if(User.IsInRole("Admin"))
                          {
                          <li class="nav-item">
                             <a class="nav-link text-dark"  asp-controller="Simulation" asp-action="Index">Simulations</a>
@@ -45,8 +45,30 @@
                             <a class="nav-link text-dark"  asp-controller="ProductionPlanAutomatic" asp-action="Index">Production Plan Automatic</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark"  asp-controller="ManagerUsers" asp-action="Index">Manager Users</a>
-                        </li>
+                            <a class="nav-link text-dark"  asp-controller="User" asp-action="Index">Manager Users</a>
+                            </li>
+                             <li class="nav-item">
+                                <a class="nav-link text-white" asp-controller="Home" asp-action="Register">Register</a>
+                            </li>
+                        }                           
+                        else
+                        {
+                            if (User.IsInRole("common"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark"  asp-controller="Simulation" asp-action="Index">Simulations</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark"  asp-controller="ProductionTable" asp-action="Index">Production Table</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark"  asp-controller="ProductionPlan" asp-action="Index">Production Plan</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark"  asp-controller="ProductionPlanAutomatic" asp-action="Index">Production Plan Automatic</a>
+                                </li>
+                            }
                          }
                         @if (httpAcc.HttpContext.Session.GetString("JWToken") != null &&
                             httpAcc.HttpContext.Session.GetString("JWToken").ToString().Length > 0)
@@ -61,9 +83,7 @@
                             <li class="nav-item">
                                 <a class="nav-link text-white" asp-controller="Home" asp-action="Login">Login</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-controller="Home" asp-action="Register">Register</a>
-                            </li>
+
                         }
 
 
@@ -89,7 +109,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2022 - JobShopWeb by Joel Jonassi - <a asp-area="" asp-controller="Home" asp-action="Privacy"></a>
+            &copy; 2022 - JobShopWeb by Joel Jonassi & Aurelien <a asp-area="" asp-controller="Home" asp-action="Privacy"></a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

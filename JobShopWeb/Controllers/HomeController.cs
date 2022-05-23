@@ -20,17 +20,19 @@ namespace JobShopWeb.Controllers
     {
        private readonly ILogger<HomeController> _logger;
        private readonly ISimulationRepository _simu;
-        private readonly IAccountRepository _account;
+       private readonly IAccountRepository _account;
+       private readonly IJobRepository _job;
 
 
         /// <summary>
         /// Dependecy Injection
         /// </summary>
         /// <param name="logger"></param>
-        public HomeController(ILogger<HomeController> logger, ISimulationRepository simu, IAccountRepository account) { 
+        public HomeController(ILogger<HomeController> logger, IJobRepository job, ISimulationRepository simu, IAccountRepository account) { 
            _logger = logger;
             _simu = simu;
             _account = account;
+            _job = job;
 
         }
 
@@ -38,7 +40,7 @@ namespace JobShopWeb.Controllers
         {
             IndexVM listOfParksAndTrails = new IndexVM()
             {
-                //JobList = await _job.GetAllAsync(UriAPI.ProductionTableService),
+                JobList = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")),
                 SimulationList = await _simu.GetAllAsync(UriAPI.SimulationsAPIPath, HttpContext.Session.GetString("JWToken")),
             };
             return View(listOfParksAndTrails);
@@ -99,7 +101,13 @@ namespace JobShopWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(User obj)
         {
-           bool result = await _account.RegisterAsync(UriAPI.AccountPath + "register/", obj);
+            CreateUserDto userDto = new CreateUserDto()
+            {
+                Username = obj.Username,
+                Password = obj.Password,
+                Role = obj.Role,
+            };
+            bool result = await _account.RegisterAsync(UriAPI.AccountPath + "register", userDto, HttpContext.Session.GetString("JWToken"));
             if (result == false)
             {
                 return View();

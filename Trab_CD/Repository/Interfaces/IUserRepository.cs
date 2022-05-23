@@ -4,6 +4,13 @@ namespace JobShopAPI.Repository.IRepository
 {
     public interface IUserRepository
     {
+
+
+
+        bool UserExists(int idUser);
+
+        bool UserExists(string userName);
+
         ICollection<User> GetUsers();
 
         User GetUser(int userId);
@@ -14,7 +21,7 @@ namespace JobShopAPI.Repository.IRepository
 
         User Authenticate(string username, string password);
 
-        User Register(string username, string password);
+        User Register(string username, string password, string role);
 
         bool DeleteUser(User user);
 

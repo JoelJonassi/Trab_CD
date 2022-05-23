@@ -27,21 +27,45 @@ namespace JobShopAPI.Repository
             _appSettings = appSettings.Value;
         }
 
+        /// <summary>
+        /// Verifica se o utilizador existe na base de dados
+        /// </summary>
+        /// <param name="UserName"></param>
+        /// <returns></returns>
+        public bool UserExists(string UserName)
+        {
+            return _db.Users.Any(simu => simu.Username == UserName);
+        }
+
+        /// <summary>
+        /// Verifica se o utilizador existe na base de dados
+        /// </summary>
+        /// <param name="UserName"></param>
+        /// <returns></returns>
+        public bool UserExists(int IdUser)
+        {
+            return _db.Users.Any(user => user.Id == IdUser);
+        }
+
+        /// <summary>
+        /// Bucar todos os utilizadores na base de dados
+        /// </summary>
+        /// <returns></returns>
         public ICollection<User> GetUsers()
         {
             return _db.Users.OrderBy(a => a.Username).ToList();
         }
 
         /// <summary>
-        /// 
+        /// Buscar um utilizador pelo username na base de dados
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="username"></param>
         /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public User GetUser(string username)
         {
             return _db.Users.FirstOrDefault(user => user.Username == username);
         }
+
 
         /// <summary>
         /// 
@@ -115,20 +139,29 @@ namespace JobShopAPI.Repository
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        public User Register(string username, string password)
+       /// <summary>
+       /// Função para registar um utilizador
+       /// </summary>
+       /// <param name="username"></param>
+       /// <param name="password"></param>
+       /// <returns></returns>
+        public User Register(string username, string password, string role)
         {
             User userObj = new User()
             {
                 Username = username,
                 Password = password,
-                Role = "Admin"
+                Role = role
             };
+            if(userObj.Role == "SenhaSecreta")
+            {
+                userObj.Role = "Admin";
+                _db.Users.Add(userObj);
+                _db.SaveChanges();
+                userObj.Password = "";
+                return userObj;
+            }
+            userObj.Role = "common";
             _db.Users.Add(userObj);
             _db.SaveChanges();
             userObj.Password = "";
@@ -148,7 +181,7 @@ namespace JobShopAPI.Repository
             if (userObj.Password == oldPassword)
             {
                 userObj.Password = newPassword;
-                _db.Users.Add(userObj);
+                _db.Users.Update(userObj);
                 _db.SaveChanges();
                 userObj.Password = "";
                 return true;

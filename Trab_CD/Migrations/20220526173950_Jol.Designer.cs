@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobShopAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220511001745_db123")]
-    partial class db123
+    [Migration("20220526173950_Jol")]
+    partial class Jol
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,18 +31,43 @@ namespace JobShopAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdJob"), 1L, 1);
 
-                    b.Property<int>("IdOperation")
-                        .HasColumnType("int");
-
                     b.Property<string>("NameJob")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdJob");
 
+                    b.ToTable("Jobs");
+                });
+
+            modelBuilder.Entity("JobShopAPI.Models.JobOperation", b =>
+                {
+                    b.Property<int>("IdJob")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdOperation")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdJob", "IdOperation");
+
                     b.HasIndex("IdOperation");
 
-                    b.ToTable("Jobs");
+                    b.ToTable("JobOperation");
+                });
+
+            modelBuilder.Entity("JobShopAPI.Models.JobSimulation", b =>
+                {
+                    b.Property<int>("IdJob")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdSimulation")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdJob", "IdSimulation");
+
+                    b.HasIndex("IdSimulation");
+
+                    b.ToTable("JobSimulation");
                 });
 
             modelBuilder.Entity("JobShopAPI.Models.Machine", b =>
@@ -53,16 +78,31 @@ namespace JobShopAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdMachine"), 1L, 1);
 
-                    b.Property<int>("IdOperation")
-                        .HasColumnType("int");
-
                     b.Property<string>("MachineName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("time")
+                        .HasColumnType("int");
+
                     b.HasKey("IdMachine");
 
                     b.ToTable("Machines");
+                });
+
+            modelBuilder.Entity("JobShopAPI.Models.MachineOperation", b =>
+                {
+                    b.Property<int>("IdMachine")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdOperation")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdMachine", "IdOperation");
+
+                    b.HasIndex("IdOperation");
+
+                    b.ToTable("MachineOperation");
                 });
 
             modelBuilder.Entity("JobShopAPI.Models.Operation", b =>
@@ -73,15 +113,9 @@ namespace JobShopAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOperation"), 1L, 1);
 
-                    b.Property<int>("IdMachine")
-                        .HasColumnType("int");
-
                     b.Property<string>("OperationName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("time")
-                        .HasColumnType("int");
 
                     b.HasKey("IdOperation");
 
@@ -96,13 +130,7 @@ namespace JobShopAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSimulation"), 1L, 1);
 
-                    b.Property<int>("IdJob")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdMachine")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdOperation")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("NameSimulation")
@@ -111,11 +139,7 @@ namespace JobShopAPI.Migrations
 
                     b.HasKey("IdSimulation");
 
-                    b.HasIndex("IdJob");
-
-                    b.HasIndex("IdMachine");
-
-                    b.HasIndex("IdOperation");
+                    b.HasIndex("Id");
 
                     b.ToTable("Simulations");
                 });
@@ -127,6 +151,10 @@ namespace JobShopAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -145,72 +173,96 @@ namespace JobShopAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MachineOperation", b =>
+            modelBuilder.Entity("JobShopAPI.Models.JobOperation", b =>
                 {
-                    b.Property<int>("IdMachine")
-                        .HasColumnType("int");
+                    b.HasOne("JobShopAPI.Models.Job", "Job")
+                        .WithMany("JobOperation")
+                        .HasForeignKey("IdJob")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<int>("IdOperation")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdMachine", "IdOperation");
-
-                    b.HasIndex("IdOperation");
-
-                    b.ToTable("MachineOperation");
-                });
-
-            modelBuilder.Entity("JobShopAPI.Models.Job", b =>
-                {
                     b.HasOne("JobShopAPI.Models.Operation", "Operation")
-                        .WithMany()
+                        .WithMany("JobOperation")
                         .HasForeignKey("IdOperation")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Job");
+
                     b.Navigation("Operation");
                 });
 
-            modelBuilder.Entity("JobShopAPI.Models.Simulation", b =>
+            modelBuilder.Entity("JobShopAPI.Models.JobSimulation", b =>
                 {
                     b.HasOne("JobShopAPI.Models.Job", "Job")
-                        .WithMany()
+                        .WithMany("JobSimulation")
                         .HasForeignKey("IdJob")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JobShopAPI.Models.Machine", "Machine")
-                        .WithMany()
-                        .HasForeignKey("IdMachine")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("JobShopAPI.Models.Operation", "Operation")
-                        .WithMany()
-                        .HasForeignKey("IdOperation")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.HasOne("JobShopAPI.Models.Simulation", "Simulation")
+                        .WithMany("JobSimulation")
+                        .HasForeignKey("IdSimulation")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Job");
+
+                    b.Navigation("Simulation");
+                });
+
+            modelBuilder.Entity("JobShopAPI.Models.MachineOperation", b =>
+                {
+                    b.HasOne("JobShopAPI.Models.Machine", "Machine")
+                        .WithMany("MachineOperation")
+                        .HasForeignKey("IdMachine")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("JobShopAPI.Models.Operation", "Operation")
+                        .WithMany("MachineOperation")
+                        .HasForeignKey("IdOperation")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Machine");
 
                     b.Navigation("Operation");
                 });
 
-            modelBuilder.Entity("MachineOperation", b =>
+            modelBuilder.Entity("JobShopAPI.Models.Simulation", b =>
                 {
-                    b.HasOne("JobShopAPI.Models.Operation", null)
+                    b.HasOne("JobShopAPI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("IdMachine")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JobShopAPI.Models.Machine", null)
-                        .WithMany()
-                        .HasForeignKey("IdOperation")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("JobShopAPI.Models.Job", b =>
+                {
+                    b.Navigation("JobOperation");
+
+                    b.Navigation("JobSimulation");
+                });
+
+            modelBuilder.Entity("JobShopAPI.Models.Machine", b =>
+                {
+                    b.Navigation("MachineOperation");
+                });
+
+            modelBuilder.Entity("JobShopAPI.Models.Operation", b =>
+                {
+                    b.Navigation("JobOperation");
+
+                    b.Navigation("MachineOperation");
+                });
+
+            modelBuilder.Entity("JobShopAPI.Models.Simulation", b =>
+                {
+                    b.Navigation("JobSimulation");
                 });
 #pragma warning restore 612, 618
         }

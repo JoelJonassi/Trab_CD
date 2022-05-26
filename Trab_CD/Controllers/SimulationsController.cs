@@ -1,7 +1,9 @@
 ﻿///
 using AutoMapper;
+using JobShopAPI.Data;
 using JobShopAPI.Models;
 using JobShopAPI.Models.Dto;
+using JobShopAPI.Repository.Interfaces;
 using JobShopAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,53 +22,83 @@ namespace JobShopAPI.Controllers
 
         private readonly ISimulationRepository _simuRepo;
         private readonly IMapper _mapper;
+        private readonly IJobRepository _job;
+        private readonly IOperationRepository _operationRepo;
+        private readonly ApplicationDbContext _db;
 
-        public SimulationsController(IMapper mapper, ISimulationRepository sim)
+        public SimulationsController(ApplicationDbContext db, IMapper mapper, ISimulationRepository sim, IJobRepository job, IOperationRepository operationRepo)
         {
             _simuRepo = sim;
             _mapper = mapper;
+            _job = job;
+            _operationRepo = operationRepo;
+            _db = db;
 
         }
-       
+
         /// <summary>
-        /// Get List of Simulations
+        /// Buscar todos os trabalhos
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<SimulationDto>))]
         [ProducesResponseType(400)]
-        [AllowAnonymous]
         public IActionResult GetSimulations()
         {
-            var objList = _simuRepo.GetSimulations();
-            var objDto = new List<SimulationDto>();
+         
+            
+               var simulations = from jobSimu in _db.JobSimulation
+                           from job in _db.Jobs
+                           from simulation in _db.Simulations
+                      from user in _db.Users
+                           where job.IdJob == jobSimu.IdJob && simulation.IdSimulation == jobSimu.IdSimulation && user.Id == simulation.Id
+                           select new
+                           {
+                               IdUser = user.Id,
+                               IdSimulation = simulation.IdSimulation,
+                               NameSimulation = simulation.NameSimulation,
+                               IdJob = job.IdJob,
+                               NameJob = job.NameJob,
+                           };
+                
+               
+          
+            var itens = simulations.OrderBy(u => u.IdUser).ToList(); ;
+            return Ok(itens);
 
-            foreach (var item in objList)
-            {
-                objDto.Add(_mapper.Map<SimulationDto>(item));
-            }
-            return Ok(objList);
+
         }
 
+
         /// <summary>
-        /// Busca de simulação pelo Id
+        /// Buscar trabalho pelo Id, Mostra o tempo, a máquina e a operação assoaciada ao job
         /// </summary>
-        /// <param name="simulationId"></param>
+        /// <param name="jobId"></param>
         /// <returns></returns>
-        [HttpGet("{IdSimulation:int}", Name = "GetSimulation")]
-        [ProducesResponseType(200, Type = typeof(List<SimulationDto>))]
+        [HttpGet("{simulationId:int}", Name = "GetSimulation")]
+        [ProducesResponseType(200, Type = typeof(List<JobDto>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesDefaultResponseType]
-        public IActionResult GetSimulation(int simulationId)
+        [Authorize]
+        public IActionResult GetSimulation(int idSimulation)
         {
-            var obj = _simuRepo.GetSimulation(simulationId);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            var objDto = _mapper.Map<SimulationDto>(obj);
-            return Ok(objDto);
+  
+            var simu = from jobSimu in _db.JobSimulation
+                          join job in _db.Jobs.AsEnumerable() on jobSimu.IdJob equals job.IdJob
+                          join simulation in _db.Simulations.AsEnumerable() on jobSimu.IdSimulation equals simulation.IdSimulation
+                          join user in _db.Users.AsEnumerable() on simulation.Id equals user.Id
+                          where  simulation.IdSimulation == idSimulation && user.Id == simulation.Id
+                          select new
+                          {
+                              IdUser = user.Id,
+                              IdSimulation = simulation.IdSimulation,
+                              NameSimulation = simulation.NameSimulation,
+                              IdJob = job.IdJob,
+                              NameJob = job.NameJob,
+                          };
+            simu.FirstOrDefault(s => s.IdSimulation == idSimulation);
+            var item = simu;
+            return Ok(item);
         }
 
         /// <summary>
@@ -81,6 +113,7 @@ namespace JobShopAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateSimulation([FromBody] CreateSimulationDto simulationDto)
         {
+            //Dizer que a simulação pertence ao job
             if (simulationDto == null)
             {
                 return BadRequest(ModelState); //Model State contém todos erros que são encontrados
@@ -94,6 +127,7 @@ namespace JobShopAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
+            
             var simulationObj = _mapper.Map<Simulation>(simulationDto);
 
             if (!_simuRepo.CreateSimulation(simulationObj))

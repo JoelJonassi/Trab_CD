@@ -4,7 +4,7 @@
 
 namespace JobShopAPI.Migrations
 {
-    public partial class db3 : Migration
+    public partial class Jol : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

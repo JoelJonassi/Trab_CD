@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JobShopAPI.Data;
 using JobShopAPI.Models;
 using JobShopAPI.Models.Dto;
 using JobShopAPI.Repository.Interfaces;
@@ -17,60 +18,82 @@ namespace JobShopAPI.Controllers
     {
 
         private readonly IOperationRepository _operation;
+        private readonly IMachineRepository _machine;
+        private readonly IMachineOperationRepository _machineOperation;
         private readonly IMapper _mapper;
+        private readonly ApplicationDbContext _db;
 
-        public OperationsController(IMapper mapper, IOperationRepository operation)
+        public OperationsController(ApplicationDbContext db, IMapper mapper, IMachineRepository machine, IOperationRepository operation, IMachineOperationRepository machineOperation)
         {
             _operation = operation;
             _mapper = mapper;
+            _machine = machine;
+            _machineOperation = machineOperation;
+            _db = db;
 
         }
 
-       /// <summary>
-       /// Buscar todas as operações existentes
-       /// </summary>
-       /// <returns></returns>
+        /// <summary>
+        /// Buscar todos os trabalhos
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<OperationDto>))]
         [ProducesResponseType(400)]
         public IActionResult GetOperations()
         {
-            var objList = _operation.GetOperations();
-            var objDto = new List<OperationDto>();
+            var machines = from maOp in _db.MachineOperation
+                           from machine in _db.Machines
+                           from operation in _db.Operations
+                           where maOp.IdMachine == machine.IdMachine && maOp.IdOperation == operation.IdOperation
+                           select new
+                           {
+                               IdOperation = operation.IdOperation,
+                               NameOperation = operation.OperationName,
+                               IdMachine = machine.IdMachine,
+                               NameMachine = machine.MachineName,
+                               Time = machine.time,
+                           };
 
-            foreach (var item in objList)
-            {
-                objDto.Add(_mapper.Map<OperationDto>(item));
-            }
-            return Ok(objList);
+
+
+            var itens = machines.OrderBy(m => m.IdOperation).ToList(); ;
+            return Ok(itens);
         }
 
-
-
         /// <summary>
-        /// Buscar operação pelo Id
+        /// Buscar trabalho pelo Id, Mostra o tempo, a máquina e a operação assoaciada ao job
         /// </summary>
-        /// <param name="IdOperation"></param>
+        /// <param name="jobId"></param>
         /// <returns></returns>
-        [HttpGet("{IdOperation:int}", Name = "GetOperation")]
-        [ProducesResponseType(200, Type = typeof(List<OperationDto>))]
+        [HttpGet("{operationId:int}", Name = "GetOperation")]
+        [ProducesResponseType(200, Type = typeof(List<JobDto>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesDefaultResponseType]
-        public IActionResult GetOperation(int IdOperation)
+        [Authorize]
+        public IActionResult GetOperation(int idOperation)
         {
-            var obj = _operation.GetOperation(IdOperation);
-            if (obj == null)
-            {
-                return NotFound();
-            }
-            var objDto = _mapper.Map<OperationDto>(obj);
-            return Ok(objDto);
+            var machine = from maOp in _db.MachineOperation
+                          join op in _db.Operations.AsEnumerable() on maOp.IdOperation equals op.IdOperation
+                          join m in _db.Machines.AsEnumerable() on maOp.IdMachine equals m.IdMachine
+                          where op.IdOperation == idOperation
+                          select new
+                          {
+                              IdOperation = op.IdOperation,
+                              NameOperation = op.OperationName,
+                              IdMachine = m.IdMachine,
+                              NameMachine = m.MachineName,
+                              Time = m.time,
+                          };
+            machine.FirstOrDefault(j => j.IdMachine == idOperation);
+            var item = machine;
+            return Ok(item);
         }
 
 
+
         /// <summary>
-        /// Criar Simulação
+        /// Criar Operação e inserir uma máquina na operação
         /// </summary>
         /// <param name="simulationDto"></param>
         /// <returns></returns>
@@ -79,7 +102,7 @@ namespace JobShopAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult CreateSimulation([FromBody] CreateOperationDto simulationDto)
+        public IActionResult CreateOperation([FromBody] CreateOperationDto simulationDto)
         {
             if (simulationDto == null)
             {
@@ -95,7 +118,16 @@ namespace JobShopAPI.Controllers
                 return BadRequest(ModelState);
             }
             var simulationObj = _mapper.Map<Operation>(simulationDto);
-
+            List<Machine> ma = new List<Machine>();
+           /* foreach(var machine in simulationObj.Machines)
+            {
+                var m = _machine.GetMachine(machine.IdMachine);
+                if (machine.IdMachine == m.IdMachine)
+                {
+                    ma.Add(m);
+                }
+            }*/
+            //simulationObj.Machines = ma;
             if (!_operation.CreateOperation(simulationObj))
             {
                 ModelState.AddModelError("", $"something went wrong when saving the record {simulationObj.IdOperation}");

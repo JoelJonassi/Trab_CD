@@ -7,7 +7,7 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/simulation/GetAllSimulations",
+            "url": "/Simulation/GetAllSimulations",
             "type": "GET",
             "datatype": "json"
         },
@@ -15,13 +15,16 @@ function loadDataTable() {
             { "data": "idSimulation", "width": "30%" },
             { "data": "nameSimulation", "width": "30%" },
             { "data": "idJob", "width": "20%" },
-            { "data": "idMachine", "width": "30%" },
-            { "data": "idOperation", "width": "30%" },
-            { "data": "idOperation", "width": "30%" },
+            { "data": "nameJob", "width": "30%" },
+ 
             {
                 "data": "idSimulation",
                 "render": function (data) {
                     return `<div class="text-center">
+
+                                <a href="/Job/Upsert/${data}" class='btn btn-success text-white'
+                                    style='cursor:pointer;'> <i class="fa fa-eye" aria-hidden="true"></i></a>
+                                    &nbsp;
                                 <a href="/simulation/Upsert/${data}" class='btn btn-success text-white'
                                     style='cursor:pointer;'> <i class='far fa-edit'></i></a>
                                     &nbsp;

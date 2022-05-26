@@ -7,25 +7,32 @@ $(document).ready(function () {
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/trails/GetAllTrail",
+            "url": "/Plan/GetAllPlans",
             "type": "GET",
             "datatype": "json"
         },
         "columns": [
-            { "data": "job.nameJob", "width": "50%" },
-            { "data": "jobId", "width": "20%" },
-            { "data": "machineId", "width": "20%" },
+            { "data": "idSimulation", "width": "30%" },
+            { "data": "idJob", "width": "30%" },
+            { "data": "idOperation", "width": "20%" },
+            { "data": "idMachine", "width": "30%" },
+            { "data": "initialTime", "width": "30%" },
+            { "data": "finalTime", "width": "30%" },
+
             {
-                "data": "id",
+                "data": "idSimulation",
                 "render": function (data) {
                     return `<div class="text-center">
-                                <a href="/trails/Upsert/${data}" class='btn btn-success text-white'
+                                 <a href="/plan/Upsert/${data}" class='btn btn-success text-white'
+                                    style='cursor:pointer;'> <i class="fa fa-eye" aria-hidden="true"></i></a>
+                                    &nbsp;
+                                <a href="/Plan/Upsert/${data}" class='btn btn-success text-white'
                                     style='cursor:pointer;'> <i class='far fa-edit'></i></a>
                                     &nbsp;
-                                <a onclick=Delete("/trails/Delete/${data}") class='btn btn-danger text-white'
+                                <a onclick=Delete("/Plan/Delete/${data}") class='btn btn-danger text-white'
                                     style='cursor:pointer;'> <i class='far fa-trash-alt'></i></a>
                                 </div>
-                            `;
+                           `;
                 }, "width": "30%"
             }
         ]
@@ -39,9 +46,8 @@ function Delete(url) {
         icon: "warning",
         buttons: true,
         dangerMode: true
-
     }).then((willDelete) => {
-        if (willDelete)
+        if (willDelete) {
             $.ajax({
                 type: 'DELETE',
                 url: url,
@@ -54,6 +60,7 @@ function Delete(url) {
                         toastr.error(data.message);
                     }
                 }
-            })
-    })
+            });
+        }
+    });
 }

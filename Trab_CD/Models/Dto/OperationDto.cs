@@ -9,9 +9,6 @@ namespace JobShopAPI.Models.Dto
         public int IdOperation { get; set; }
         public string OperationName { get; set; }
         [Required]
-        public int IdMachine { get; set; }
-        [ForeignKey("IdMachine")]
-        public ICollection<Machine> Machines { get; set; }
-        public int time { get; set; }
+        public List<Machine> Machines { get; set; }
     }
 }

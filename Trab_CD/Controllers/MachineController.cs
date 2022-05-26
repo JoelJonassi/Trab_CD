@@ -5,6 +5,7 @@
  * 
  */
 using AutoMapper;
+using JobShopAPI.Data;
 using JobShopAPI.Models;
 using JobShopAPI.Models.Dto;
 using JobShopAPI.Repository.Interfaces;
@@ -21,48 +22,82 @@ namespace JobShopAPI.Controllers
         private readonly IOperationRepository _operation;
         private readonly IMachineRepository _machine;
         private readonly IMapper _mapper;
+        private readonly ApplicationDbContext _db;
 
 
-        public MachineController(IMapper mapper,IOperationRepository operation, IMachineRepository machine)
+        public MachineController(ApplicationDbContext db, IMapper mapper,IOperationRepository operation, IMachineRepository machine)
         {
             _mapper = mapper;
             _machine = machine;
             _operation = operation;
+            _db = db;
 
         }
-        
-        /*
+
         /// <summary>
-        ///Atualiza os dados da operação na máquina
+        /// Buscar todos os trabalhos
         /// </summary>
-        /// <param name="idOperation"></param>
-        /// <param name="operationDto"></param>
         /// <returns></returns>
-         [HttpPatch("{IdMachine:int}", Name = "UpdateMachine")]
-         [ProducesResponseType(StatusCodes.Status201Created)]
-         [ProducesResponseType(StatusCodes.Status404NotFound)]
-         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpGet]
+        [ProducesResponseType(400)]
+        public IActionResult GetMachines()
+        {
+            var machines = from maOp in _db.MachineOperation
+                       from machine in _db.Machines
+                       from operation in _db.Operations
+                       where maOp.IdMachine == machine.IdMachine && maOp.IdOperation == operation.IdOperation
+                       select new
+                       {
+                           IdOperation = operation.IdOperation,
+                           NameOperation = operation.OperationName,
+                           IdMachine = machine.IdMachine,
+                           NameMachine = machine.MachineName,
+                           
+                       };
+            
+        
+        
+            var itens = machines.OrderBy(m => m.IdOperation).ToList(); ;
+            return Ok(itens);
+        }
+
+        /// <summary>
+        /// Buscar trabalho pelo Id, Mostra o tempo, a máquina e a operação assoaciada ao job
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        [HttpGet("{machineId:int}", Name = "GetMachine")]
+        [ProducesResponseType(200, Type = typeof(List<JobDto>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesDefaultResponseType]
         [Authorize]
-        public IActionResult UpdateOperationInMachine(int idOperation, [FromBody] UpdateOperationDto operationDto)
-         {
+        public IActionResult GetMachine(int machineId)
+        {
+            var machine = from maOp in _db.MachineOperation
+                          join op in _db.Operations.AsEnumerable() on maOp.IdOperation equals op.IdOperation
+                          join m in _db.Machines.AsEnumerable() on maOp.IdMachine equals m.IdMachine
+                          where m.IdMachine == machineId
+                          select new
+                          {
+                              IdMachine = m.IdMachine,
+                              NameMachine = m.MachineName,
+                              IdOperation = op.IdOperation,
+                              NameOperation = op.OperationName
+                          };
+            machine.FirstOrDefault(j => j.IdMachine == machineId);
+            var item = machine;
+            return Ok(item);
+        }
 
-             if (_machine.MachineExists(operationDto.IdMachine))
-             {
-                 var operationObj = _mapper.Map<Operation>(operationDto);
-                 _operation.UpdateOperation(operationObj);
-                 return Ok(operationDto);
-             }
-             return StatusCode(404, ModelState);
-         }*/
 
 
-    
-      /// <summary>
-      /// Atualiza máquina
-      /// </summary>
-      /// <param name="IdMachine"></param>
-      /// <param name="machineDto"></param>
-      /// <returns></returns>
+        /// <summary>
+        /// Atualiza máquina
+        /// </summary>
+        /// <param name="IdMachine"></param>
+        /// <param name="machineDto"></param>
+        /// <returns></returns>
         [HttpPatch("{IdMachine:int}", Name = "UpdateMachine")]
         [ProducesResponseType(204, Type = typeof(List<UpdateMachineDto>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -89,12 +124,12 @@ namespace JobShopAPI.Controllers
         /// </summary>
         /// <param name="machineDto"></param>
         /// <returns></returns>
-        [HttpPut]
+        /*[HttpPut]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize]
-        public IActionResult InsertMachineInOperation(int IdOperation, [FromBody] CreateMachineDto machineDto)
+        public IActionResult InsertMachineInOperation([FromBody] CreateMachineDto machineDto)
         {
             var obj = _operation.GetOperation(IdOperation);
 
@@ -103,7 +138,7 @@ namespace JobShopAPI.Controllers
                 if (_operation.OperationExists(machineDto.IdOperation))
                 {
                     var machineObj = _mapper.Map<Machine>(machineDto);
-                    obj.time = machineDto.Time;
+                    obj.Machines.Add(machineObj);
                     _operation.UpdateOperation(obj);
                     _machine.CreateMachine(machineObj);
                     return Ok(machineDto);
@@ -111,7 +146,7 @@ namespace JobShopAPI.Controllers
 
             }
             return StatusCode(404, ModelState);
-        }
+        }*/
 
 
 

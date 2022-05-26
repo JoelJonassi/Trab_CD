@@ -3,10 +3,12 @@
 <div class="p-4" style="border-radius:20px;">
     <div class="row">
         <div class="col-6">
-            <h2 class="text-primary">Simulations List</h2>
+            <h2 class="text-primary">Simulations</h2>
         </div>
         <div class="col-6 text-right">
             <a  asp-action="Upsert" class="btn btn-primary text-white"><i class="fas fa-plus"></i>&nbsp; Create New Simulation</a>
+            <a asp-action="ExportToExcellSimulationTable" asp-controller = "Simulation" class="btn btn-info text-dark"><i class="fas fa-plus"></i> &nbsp; Export Table to Excell</a>
+
         </div>
     </div>
     <br />
@@ -18,10 +20,9 @@
                     <th>Simulation Id</th>
                     <th>Simulation Name</th>
                     <th>Job Id</th>
-                    <th>Operation Id</th>
-                    <th>Machine Id</th>
-                    <th>Time</th>
+                    <th>Name Job</th>
                     <th></th>
+
                 </tr>
             </thead>
         </table>
@@ -31,5 +32,5 @@
 
 
 @section Scripts{
-    <script src="~/js/Simulations.js"></script>
+    <script src="~/js/simulations.js"></script>
 }

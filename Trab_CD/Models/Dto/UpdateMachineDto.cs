@@ -6,11 +6,10 @@ namespace JobShopAPI.Models.Dto
     public class UpdateMachineDto
     {
 
-        [Key]
         public int IdMachine { get; set; }
-        [Required]
+
         public string MachineName { get; set; }
-        [Required]
-        public int IdOperation { get; set; }
+
+        public int time { get; set; }
     }
 }

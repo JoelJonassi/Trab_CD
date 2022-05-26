@@ -5,9 +5,6 @@ namespace JobShopWeb.Models.ViewModel
 {
     public class SimulationVM
     {
-        public IEnumerable<SelectListItem> OperationList { get; set; }
-
-        public IEnumerable<SelectListItem> MachineList { get; set; }
 
         public IEnumerable<SelectListItem> JobList { get; set; }
 

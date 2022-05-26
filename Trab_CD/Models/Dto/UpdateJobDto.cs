@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JobShopAPI.Models.Dto
 {
-    public class UpdateJobDto
-    {
-        public int IdJob { get; set; }
-        [Required]
+    public class UpdateJobDto {
 
-        public int IdOperation { get; set; }
-        [NotMapped]
-        [ForeignKey("IdOperation")]
-        public UpdateOperationDto Operation { get; set; }
+
+        public int IdJob { get; set; }
+
+        public string NameJob { get; set; }
+
+        public ICollection<JobOperation> JobOperation { get; set; }
+
     }
 }

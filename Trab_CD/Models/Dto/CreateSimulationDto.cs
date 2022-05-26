@@ -7,13 +7,10 @@ namespace JobShopAPI.Models.Dto
 
         [Required]
         public string NameSimulation { get; set; }
-        [Required]
-        public int IdJob { get; set; }
-        [Required]
-        public int IdOperation { get; set; }
 
-        [Required]
-        public int IdMachine { get; set; }
+        public int Id { get; set; }
+
+        public List<Job> Job { get; set; }
     }
 
 }

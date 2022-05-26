@@ -83,12 +83,12 @@ namespace JobShopAPI.Repository
         /// <summary>
         /// Função que apaga uma simulação
         /// </summary>
-        /// <param name="simulation"></param>
+        /// <param name="operation"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public bool DeleteOperation(Operation simulation)
+        public bool DeleteOperation(Operation operation)
         {
-            _db.Operations.Remove(simulation);
+            _db.Operations.Remove(operation);
             return Save();
         }
 

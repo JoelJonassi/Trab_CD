@@ -43,6 +43,7 @@ namespace JobShopWeb
             services.AddScoped<IOperationRepository, OperationRepository>();
             services.AddScoped<ISimulationRepository, SimulationRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IPlanRepository, PlanRepository>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddHttpClient();

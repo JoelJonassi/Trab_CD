@@ -5,8 +5,14 @@ namespace JobShopAPI.Models.Dto
 {
     public class MachineDto
     {
+
+
         public int IdMachine { get; set; }
-        [Required]
+
         public string MachineName { get; set; }
+
+        public int time { get; set; }
+
+
     }
 }

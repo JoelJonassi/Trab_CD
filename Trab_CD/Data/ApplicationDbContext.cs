@@ -14,27 +14,64 @@ namespace JobShopAPI.Data
         {
             base.OnModelCreating(builder);
 
+
+         
+
+
+
+            builder.Entity<JobSimulation>()
+             .HasKey(jp => new { jp.IdJob, jp.IdSimulation });
+
             //Cria a relação de muitos para muitos
-            builder.Entity<Operation>()
-             .HasMany(b => b.Machines)
-             .WithMany(c => c.Operations);
-            /*
-            builder.Entity<Simulation>()
-            .HasOne(e => e.Machine)
-            .WithMany()
-            .OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<JobSimulation>()
+            .HasOne(j => j.Job)
+            .WithMany(b => b.JobSimulation)
+            .HasForeignKey(jp => jp.IdJob);
 
-            builder.Entity<Simulation>()
-            .HasOne(e => e.Operation)
-            .WithMany()
-            .OnDelete(DeleteBehavior.NoAction);
+            builder.Entity<JobSimulation>()
+              .HasOne(j => j.Simulation)
+              .WithMany(b => b.JobSimulation)
+              .HasForeignKey(jp => jp.IdSimulation);
 
-            //Permite uma ligação de um para muitos
-            builder.Entity<Simulation>()
-            .HasOne(e => e.Job)
-            .WithMany()
-            .OnDelete(DeleteBehavior.NoAction);   
-            */
+
+            builder.Entity<MachineOperation>()
+            .HasKey(jp => new { jp.IdMachine, jp.IdOperation });
+
+            //Cria a relação de muitos para muitos
+            builder.Entity<MachineOperation>()
+            .HasOne(j => j.Machine)
+            .WithMany(b => b.MachineOperation)
+            .HasForeignKey(jp => jp.IdMachine);
+         
+
+
+            builder.Entity<MachineOperation>()
+                .HasOne(j => j.Operation)
+                .WithMany(b => b.MachineOperation)
+                .HasForeignKey(jp => jp.IdOperation);
+
+            builder.Entity<JobOperation>()
+            .HasKey(jp => new { jp.IdJob, jp.IdOperation });
+
+
+
+
+            /*builder.Entity<Simulation>()
+             .HasOne(j => j.Job)
+             .WithMany(b => b.)
+             .HasForeignKey(jp => jp.IdJob);*/
+
+            builder.Entity<JobOperation>()
+             .HasOne(j => j.Job)
+             .WithMany(b => b.JobOperation)
+             .HasForeignKey(jp => jp.IdJob);
+
+            builder.Entity<JobOperation>()
+            .HasOne(j => j.Operation)
+            .WithMany(b => b.JobOperation)
+            .HasForeignKey(jp => jp.IdOperation);
+
+         
 
 
         }
@@ -45,5 +82,9 @@ namespace JobShopAPI.Data
         public DbSet<Job> Jobs { get; set; }
         public DbSet <Machine> Machines { get; set; }
         public DbSet<Operation> Operations { get; set; }
+        public DbSet<MachineOperation> MachineOperation { get; set; }
+        public DbSet<JobOperation> JobOperation { get; set; }
+        public DbSet<JobSimulation> JobSimulation { get; set; }
+        public DbSet<Plan> Plan { get; set; }
     }
 }

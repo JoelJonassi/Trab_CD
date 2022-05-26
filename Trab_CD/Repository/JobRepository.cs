@@ -1,5 +1,9 @@
-﻿using JobShopAPI.Data;
+﻿using Google.Protobuf.WellKnownTypes;
+using JobShopAPI.Data;
 using JobShopAPI.Models;
+using JobShopAPI.Models.Dto;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobShopAPI.Repository.Interfaces
 {
@@ -51,9 +55,25 @@ namespace JobShopAPI.Repository.Interfaces
         /// Função que mostra todas as simulações
         /// </summary>
         /// <returns></returns>
-        public ICollection<Job> GetJobs()
+        public Task<ActionResult<ICollection<Job>>>  GetJobs()
         {
-            return _db.Jobs.OrderBy(simu => simu.IdJob).ToList();
+            var objDto = new List<JobDto>();
+         
+
+            var jobs = from opjob in _db.JobOperation
+                       from job in _db.Jobs
+                       from operation in _db.Operations
+                       where job.IdJob == opjob.IdJob
+                       select new
+                       {
+                          IdJob = job.IdJob,
+                          NameJob = job.NameJob,
+                          IdOperation = operation.IdOperation,
+                          NameOperation = operation.OperationName
+                       };
+
+            var itens = jobs;
+            return (Task<ActionResult<ICollection<Job>>>)itens;
         }
 
         /// <summary>

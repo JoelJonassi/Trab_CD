@@ -7,10 +7,10 @@ namespace JobShopAPI.Repository.Interfaces
         bool MachineExists(string NameSimulation);
         bool MachineExists(int IdSimulation);
         ICollection<Machine> GetMachines();
-        Machine GetMachine(int IdSimulation);
-        bool CreateMachine(Machine simulation);
-        bool UpdateMachine(Machine simulation);
-        bool DeleteMachine(Machine simulation);
+        Machine GetMachine(int IdMachine);
+        bool CreateMachine(Machine machine);
+        bool UpdateMachine(Machine machine);
+        bool DeleteMachine(Machine machine);
         bool Save();
     }
 }

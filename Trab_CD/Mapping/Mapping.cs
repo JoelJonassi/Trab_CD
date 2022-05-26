@@ -15,6 +15,7 @@ namespace JobShopAPI.Mappings
             CreateMap<Job, JobDto>().ReverseMap();
             CreateMap<Job, CreateJobDto>().ReverseMap();
             CreateMap<Job, UpdateJobDto>().ReverseMap();
+            CreateMap<Job, ShowJobDto>().ReverseMap();
 
             CreateMap<Operation, OperationDto>().ReverseMap();
             CreateMap<Operation, CreateOperationDto>().ReverseMap();
@@ -28,6 +29,10 @@ namespace JobShopAPI.Mappings
             CreateMap<User, LoginUserDto>().ReverseMap();
             CreateMap<User, ChangePasswordUserDto>().ReverseMap();
             CreateMap<User, UserDto>().ReverseMap();
+
+            CreateMap<Plan, PlanDto>().ReverseMap();
+            CreateMap<Plan, CreatePlanDto>().ReverseMap();
+            
 
 
         }

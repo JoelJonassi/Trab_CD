@@ -5,11 +5,10 @@ namespace JobShopAPI.Models.Dto
 {
     public class CreateMachineDto
     {
-        [Required]
+
         public string MachineName { get; set; }
-        [Required]
-        [ForeignKey("IdOperation")]
-        public int IdOperation{ get; set; }
-        public int Time { get; set; }
+
+        public int time { get; set; }
+
     }
 }

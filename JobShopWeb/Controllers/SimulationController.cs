@@ -1,11 +1,15 @@
-﻿using JobShopWeb.Models;
+﻿using FastMember;
+using JobShopWeb.Models;
 using JobShopWeb.Models.ViewModel;
 using JobShopWeb.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using OfficeOpenXml;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,21 +25,21 @@ namespace JobShopWeb.Controllers
 
         public SimulationController(ISimulationRepository sim, IJobRepository job, IMachineRepository machine, IOperationRepository operation)
         {
-            _simu = sim;
-            _job = job;
-            _operation = operation;
-            _machine = machine;
+           _simu = sim;
+           _job = job;
+           _operation = operation;
+           _machine = machine;
         }
 
-        public IActionResult Index()
-        {
+       public IActionResult Index()
+       {
             return View(new Simulation() { });
-        }
+       }
 
        public async Task <IActionResult> GetAllSimulations()
-        {
+       {
             return Json(new { data = await _simu.GetAllAsync(UriAPI.SimulationsAPIPath, HttpContext.Session.GetString("JWToken")) });
-        }
+       }
 
         [Authorize]
         public async Task<IActionResult> Upsert(int? id)
@@ -55,9 +59,6 @@ namespace JobShopWeb.Controllers
 
 
             };
-        
-
-
 
             if (id == null)
             {
@@ -136,7 +137,63 @@ namespace JobShopWeb.Controllers
                 return View(objVM);
             }
         }
+        public async Task<IActionResult> GetAllJobsProductionTable()
+        {
+            return Json(new { data = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")) });
+        }
 
+        public async Task<IActionResult> GetAllOperations()
+        {
+            return Json(new { data = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")) });
+        }
+
+        public async Task<IActionResult> DoPlan(int Job, int Operation)
+        {
+            return Json(new { data = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")) });
+        }
+        
+        /// <summary>
+        /// fazer download do ficheiro com os dados da simulação
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> ExportToExcellSimulationTable()
+        {
+            // LicenseContext of the ExcelPackage class:
+            ExcelPackage.LicenseContext = LicenseContext.Commercial;
+
+            // If you use EPPlus in a noncommercial context
+            // according to the Polyform Noncommercial license:
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            //Sua lista que está enviando apra View.
+
+            IEnumerable<Simulation> simulationList = await _simu.GetAllAsync(UriAPI.SimulationsAPIPath, HttpContext.Session.GetString("JWToken"));
+            //JobList = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")),
+
+            DataTable dt = new DataTable();
+            using (var reader = ObjectReader.Create(simulationList))
+            {
+                dt.Load(reader);
+            }
+
+            byte[] fileContents;
+            using (var package = new ExcelPackage(new FileInfo("MyWorkbook.xlsx")))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("simulationList");
+                workSheet.Cells["A1"].LoadFromDataTable(dt, true);
+                fileContents = package.GetAsByteArray();
+            }
+            if (fileContents == null || fileContents.Length == 0)
+            {
+                return NotFound();
+            }
+            return File(
+                fileContents: fileContents,
+                contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                fileDownloadName: "SimulationTable.xlsx"
+                );
+            //return View(JobList);
+
+        }
 
         [HttpDelete]
         [Authorize]
@@ -153,6 +210,8 @@ namespace JobShopWeb.Controllers
 
 
 }
+
+
 /*
 
 //jQuery.ajax

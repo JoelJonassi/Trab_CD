@@ -8,5 +8,6 @@
         public static string OperationsApiPath = APIBaseUrl + "api/Operations/";
         public static string JobsApiPath = APIBaseUrl + "api/Jobs/";
         public static string AccountPath = APIBaseUrl + "api/Users/";
+        public static string PlansApiPath = APIBaseUrl + "api/Plans/";
     }
 }

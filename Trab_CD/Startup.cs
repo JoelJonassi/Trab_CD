@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace JobShopAPI
 {
@@ -28,7 +29,9 @@ namespace JobShopAPI
         {
             // Add services to the container.
             //Get connectionString
-
+            builder.Services
+            .AddControllers()
+            .AddJsonOptions(c => c.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection2");
             builder.Services.AddCors();
@@ -119,6 +122,11 @@ namespace JobShopAPI
             builder.Services.AddScoped<IOperationRepository, OperationRepository>();
             builder.Services.AddScoped<IMachineRepository, MachineRepository>();
             builder.Services.AddScoped<IUserRepository,UserRepository>();
+
+            builder.Services.AddScoped<IJobOperationRepository, JobOperationRepository>();
+            builder.Services.AddScoped<IMachineOperationRepository, MachineOperationRepository>();
+            builder.Services.AddScoped<IJobSimulationRepository, JobSimulationRepository>();
+            builder.Services.AddScoped<IPlanRepository, PlanRepository>();
             builder.Services.AddAutoMapper(typeof(Mapping));
            // builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 

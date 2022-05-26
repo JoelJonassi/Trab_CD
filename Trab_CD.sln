@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobShopAPI", "Trab_CD\JobSh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlgoritimoOtimizacao", "AlgoritimoOtimizacao\AlgoritimoOtimizacao.csproj", "{38E0EE2E-7419-4B69-999D-5EAF2C34CBAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobShopWeb", "JobShopWeb\JobShopWeb.csproj", "{FA042148-3899-4327-A81F-93F79687E22B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobShopWeb", "JobShopWeb\JobShopWeb.csproj", "{FA042148-3899-4327-A81F-93F79687E22B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EF788A05-5834-4302-84ED-037CAB3AC1E9}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -11,11 +11,17 @@ namespace JobShopAPI.Models
     {
         [Key]
         public int IdOperation { get; set; }
+
         public string OperationName { get; set; }
-        [Required]
-        public int IdMachine { get; set; }
+
+       // [ForeignKey("IdMachine")]
+       // public ICollection<Machine> Machines { get; set; }
+
+        [ForeignKey("IdJob")]
+        public ICollection<JobOperation> JobOperation { get; set; }
+
         [ForeignKey("IdMachine")]
-        public ICollection<Machine> Machines { get; set; }
-        public int time { get; set; }
+        public ICollection<MachineOperation> MachineOperation { get; set; }
+
     }
 }

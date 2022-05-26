@@ -41,7 +41,7 @@ namespace JobShopWeb.Controllers
             IndexVM listOfParksAndTrails = new IndexVM()
             {
                 JobList = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")),
-                SimulationList = await _simu.GetAllAsync(UriAPI.SimulationsAPIPath, HttpContext.Session.GetString("JWToken")),
+                SimulationList = await _simu.GetAllAsync("https://localhost:7032/api/Simulations", HttpContext.Session.GetString("JWToken")),
             };
             return View(listOfParksAndTrails);
         }

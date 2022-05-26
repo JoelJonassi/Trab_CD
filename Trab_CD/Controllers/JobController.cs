@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JobShopAPI.Data;
 using JobShopAPI.Models;
 using JobShopAPI.Models.Dto;
 using JobShopAPI.Repository.Interfaces;
@@ -13,38 +14,48 @@ namespace JobShopAPI.Controllers
     [ApiController]
     public class JobsController : ControllerBase
     {
-
+        private readonly ApplicationDbContext _db;
         private readonly IJobRepository _job;
+        private readonly IOperationRepository _operation;
+        private readonly IJobOperationRepository _jobOperation;
         private readonly IMapper _mapper;
 
-        public JobsController(IMapper mapper, IJobRepository job)
+        public JobsController(ApplicationDbContext db,IMapper mapper, IJobRepository job, IOperationRepository operation, IJobOperationRepository jobOperation)
         {
            _job = job;
            _mapper = mapper;
+            _operation = operation;
+            _jobOperation = jobOperation;
+            _db = db;
 
         }
-        
+
         /// <summary>
         /// Buscar todos os trabalhos
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(List<JobDto>))]
         [ProducesResponseType(400)]
         public IActionResult GetJobs()
         {
-            var objList = _job.GetJobs();
-            var objDto = new List<JobDto>();
+            var jobs = from opjob in _db.JobOperation
+                       from job in _db.Jobs
+                       from operation in _db.Operations
+                       where job.IdJob == opjob.IdJob && operation.IdOperation == opjob.IdOperation
+                       select new
+                       {
+                           IdJob = job.IdJob,
+                           NameJob = job.NameJob,
+                           IdOperation = operation.IdOperation,
+                           NameOperation = operation.OperationName
+                       };
 
-            foreach (var item in objList)
-            {
-                objDto.Add(_mapper.Map<JobDto>(item));
-            }
-            return Ok(objList);
+            var itens = jobs.OrderBy(j => j.IdJob).ToList(); ;
+            return Ok(itens);
         }
 
         /// <summary>
-        /// Buscar trabalho pelo Id
+        /// Buscar trabalho pelo Id, Mostra o tempo, a máquina e a operação assoaciada ao job
         /// </summary>
         /// <param name="jobId"></param>
         /// <returns></returns>
@@ -56,14 +67,24 @@ namespace JobShopAPI.Controllers
         [Authorize]
         public IActionResult GetJob(int jobId)
         {
-            var obj = _job.GetJob(jobId);
-            if (obj == null)
-            {
-                return NotFound();
+                var job =  from opjob in _db.JobOperation
+                           join j in _db.Jobs .AsEnumerable() on opjob.IdJob equals j.IdJob
+                           join p in _db.Operations.AsEnumerable() on opjob.IdOperation equals p.IdOperation
+                           where j.IdJob == jobId
+                          select new
+                           {
+                               IdJob = j.IdJob,
+                               NameJob = j.NameJob,
+                               IdOperation = p.IdOperation,
+                               NameOperation = p.OperationName
+                           };
+
+                var item = job;
+                return Ok(item);
             }
-            var objDto = _mapper.Map<OperationDto>(obj);
-            return Ok(objDto);
-        }
+
+
+        
 
         /// <summary>
         /// Criar trabalho
@@ -92,9 +113,15 @@ namespace JobShopAPI.Controllers
                 return BadRequest(ModelState);
             }
             var jobObj = _mapper.Map<Job>(jobDto);
+            foreach (var operation in jobObj.JobOperation)
+            {
 
+                //if (jobObj.JobOperation != null) _operation.CreateOperation(operation);
+
+            }
             if (!_job.CreateJob(jobObj))
             {
+               
                 ModelState.AddModelError("", $"something went wrong when saving the record {jobObj.IdJob}");
                 return StatusCode(500, ModelState);
             }
@@ -115,7 +142,7 @@ namespace JobShopAPI.Controllers
 
         public IActionResult UpdateJob(int jobId, [FromBody] JobDto jobDto)
         {
-            if (jobDto == null || jobId != jobDto.IdOperation)
+            if (jobDto == null || jobId != jobDto.IdJob)
             {
                 return BadRequest(ModelState); //Model State contain all the errors if any encountered
             }
@@ -151,7 +178,7 @@ namespace JobShopAPI.Controllers
 
                 if (!_job.DeleteJob(jobObkj))
                 {
-                    ModelState.AddModelError("", $"something went wrong when deleting the record {jobObkj.IdOperation}");
+                    ModelState.AddModelError("", $"something went wrong when deleting the record {jobObkj.NameJob}");
                     return StatusCode(500, ModelState);
                 }
 

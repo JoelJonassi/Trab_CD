@@ -1,4 +1,5 @@
 ﻿using JobShopAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace JobShopAPI.Repository.Interfaces
 {
@@ -6,7 +7,7 @@ namespace JobShopAPI.Repository.Interfaces
     {
         bool JobExists(string NameSimulation);
         bool JobExists(int IdSimulation);
-        ICollection<Job> GetJobs();
+        Task<ActionResult<ICollection<Job>>> GetJobs();
         Job GetJob(int IdSimulation);
         bool CreateJob(Job simulation);
         bool UpdateJob(Job simulation);

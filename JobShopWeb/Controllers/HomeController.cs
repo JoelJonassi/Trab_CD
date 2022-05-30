@@ -38,12 +38,11 @@ namespace JobShopWeb.Controllers
 
       public async Task<IActionResult> Index()
         {
-            IndexVM listOfParksAndTrails = new IndexVM()
+            IndexVM jobsMachines = new IndexVM()
             {
                 JobList = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")),
-                SimulationList = await _simu.GetAllAsync("https://localhost:7032/api/Simulations", HttpContext.Session.GetString("JWToken")),
             };
-            return View(listOfParksAndTrails);
+            return View(jobsMachines);
         }
 
         public IActionResult Privacy()

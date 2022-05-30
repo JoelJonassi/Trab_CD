@@ -10,8 +10,8 @@
 
         public int IdMachine { get; set; }
 
-        public int initialTime { get; set; }
+        public int InitialTime { get; set; }
 
-        public int finalTime { get; set; }
+        public int FinalTime { get; set; }
     }
 }

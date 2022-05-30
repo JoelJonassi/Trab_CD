@@ -33,25 +33,38 @@ namespace JobShopWeb.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            ProductionTableServiceVM listOfParksAndTrails = new ProductionTableServiceVM()
+            PlanVM plan = new PlanVM()
             {
                 PlanList = await _plan.GetAllAsync(UriAPI.PlansApiPath, HttpContext.Session.GetString("JWToken")),
             };
-            return View(listOfParksAndTrails);
+            return View(plan);
 
 
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> GetAllPlans()
         {
-            return Json(new { data = await _job.GetAllAsync(UriAPI.PlansApiPath, HttpContext.Session.GetString("JWToken")) });
+            return Json(new { data = await _plan.GetAllAsync(UriAPI.PlansApiPath, HttpContext.Session.GetString("JWToken")) });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> GetAllOperations()
         {
             return Json(new { data = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")) });
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Job"></param>
+        /// <param name="Operation"></param>
+        /// <returns></returns>
         public async Task<IActionResult> DoPlan(int Job, int Operation)
         {
             return Json(new { data = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")) });
@@ -105,6 +118,58 @@ namespace JobShopWeb.Controllers
         {
             return View();
         }
+        //// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Upsert(int? id)
+        {
+            Plan obj = new Plan();
+
+            if (id == null)
+            {
+                //this will be true for Insert/Create
+                return View(obj);
+            }
+            //Flow will come here for update
+            obj = await _plan.GetAsync(UriAPI.PlansApiPath, id.GetValueOrDefault(), HttpContext.Session.GetString("JWToken"));
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upsert(Plan obj)
+        {
+            if (ModelState.IsValid)
+            {
+
+                if (obj.IdPlan == 0)
+                {
+                    await _plan.CreateAsync(UriAPI.PlansApiPath, obj, HttpContext.Session.GetString("JWToken"));
+                }
+                else
+                {
+                    await _plan.UpdateAsync(UriAPI.PlansApiPath + obj.IdPlan, obj, HttpContext.Session.GetString("JWToken"));
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(obj);
+            }
+        }
+
 
     }
 }

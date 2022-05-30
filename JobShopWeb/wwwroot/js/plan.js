@@ -12,20 +12,16 @@ function loadDataTable() {
             "datatype": "json"
         },
         "columns": [
-            { "data": "idSimulation", "width": "30%" },
-            { "data": "idJob", "width": "30%" },
-            { "data": "idOperation", "width": "20%" },
-            { "data": "idMachine", "width": "30%" },
-            { "data": "initialTime", "width": "30%" },
-            { "data": "finalTime", "width": "30%" },
+            { "data": "idMachine", "width": "15%" },
+            { "data": "idJob", "width": "15%" },
+            { "data": "idOperation", "width": "15%" },
+            { "data": "initialTime", "width": "15%" },
+            { "data": "finalTime", "width": "15%" },
 
             {
-                "data": "idSimulation",
+                "data": "idMachine",
                 "render": function (data) {
                     return `<div class="text-center">
-                                 <a href="/plan/Upsert/${data}" class='btn btn-success text-white'
-                                    style='cursor:pointer;'> <i class="fa fa-eye" aria-hidden="true"></i></a>
-                                    &nbsp;
                                 <a href="/Plan/Upsert/${data}" class='btn btn-success text-white'
                                     style='cursor:pointer;'> <i class='far fa-edit'></i></a>
                                     &nbsp;

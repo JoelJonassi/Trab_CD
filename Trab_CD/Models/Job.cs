@@ -17,10 +17,8 @@ namespace JobShopAPI.Models
         [ForeignKey("IdSimulation")]
         public ICollection<JobSimulation> JobSimulation { get; set; }
 
-        public static explicit operator Job(Task<List<object>> v)
-        {
-            throw new NotImplementedException();
-        }
+        
+
         #region Functions
         //Esta tabela deve poder ser criada através de uma função que
         //insere para uma operação específica de um trabalho, a sua máquina e o seu tempo

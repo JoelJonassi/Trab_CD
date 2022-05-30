@@ -14,6 +14,14 @@ namespace JobShopWeb.Models
 
         public string NameOperation { get; set; }
 
+        public int IdMachine { get; set; }
+
+        public string NameMachine { get; set; }
+
+        public int Time { get; set; }
+
+
+
 
     }
 }

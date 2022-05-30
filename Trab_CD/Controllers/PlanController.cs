@@ -38,7 +38,32 @@ namespace JobShopAPI.Controllers
 
         }
 
-       
+        [HttpGet]
+        [ProducesResponseType(400)]
+        public IActionResult GetPlans()
+        {
+            var plans = from plan in _db.Plan
+                       from job in _db.Jobs
+                       from operation in _db.Operations
+                       from machine in _db.Machines
+                       from simulation in _db.Simulations
+                       where job.IdJob == plan.IdJob && operation.IdOperation == plan.IdOperation && simulation.IdSimulation==plan.IdSimulation
+                       select new
+                       {
+                           IdJob = plan.IdJob,
+                           IdOperation = plan.IdOperation,
+                           IdMachine = plan.IdMachine,
+                           IdSimulation = plan.IdSimulation,
+                           IdPlan = plan.IdPlan,
+                           InitialTime = plan.InitialTime,
+                           FinalTime = plan.FinalTime,
+
+                       };
+
+            var itens = plans.OrderBy(j => j.IdJob).ToList(); ;
+            return Ok(itens);
+        }
+
 
         /// <summary>
         /// Buscar trabalho pelo Id, Mostra o tempo, a máquina e a operação assoaciada ao job
@@ -62,7 +87,9 @@ namespace JobShopAPI.Controllers
                                IdOperation = plan.IdOperation,
                                IdMachine = plan.IdMachine,
                                IdSimulation = plan.IdSimulation,
-                               IdPlan = plan.IdPlan,    
+                               IdPlan = plan.IdPlan,
+                               InitialTime = plan.InitialTime,
+                               FinalTime = plan.FinalTime,
                             
                            };
 
@@ -75,7 +102,7 @@ namespace JobShopAPI.Controllers
         /// </summary>
         /// <param name="jobId"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{simulationId}/{jobId}/{operationId}/{machineId}")]
         [ProducesResponseType(200, Type = typeof(List<JobDto>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -93,6 +120,8 @@ namespace JobShopAPI.Controllers
                           IdMachine = plan.IdMachine,
                           IdSimulation = plan.IdSimulation,
                           IdPlan = plan.IdPlan,
+                          InitialTime = plan.InitialTime,
+                          FinalTime = plan.FinalTime,
 
                       };
 
@@ -133,10 +162,10 @@ namespace JobShopAPI.Controllers
             foreach(var time in count)
             {
                 if (time.IdMachine == planDto.IdMachine) {
-                    int aux = planDto.initialTime;
-                    int total = (planDto.finalTime - aux);
-                    planDto.initialTime = time.finalTime;
-                    planDto.finalTime = planDto.initialTime + total;
+                    int aux = planDto.InitialTime;
+                    int total = (planDto.FinalTime - aux);
+                    planDto.InitialTime = time.FinalTime;
+                    planDto.FinalTime = planDto.InitialTime + total;
                 }
             }
             var jobObj = _mapper.Map<Plan>(planDto);

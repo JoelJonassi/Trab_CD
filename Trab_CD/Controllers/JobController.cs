@@ -41,16 +41,21 @@ namespace JobShopAPI.Controllers
             var jobs = from opjob in _db.JobOperation
                        from job in _db.Jobs
                        from operation in _db.Operations
-                       where job.IdJob == opjob.IdJob && operation.IdOperation == opjob.IdOperation
+                       from maOp in _db.MachineOperation
+                       from machine in _db.Machines
+                       where job.IdJob == opjob.IdJob && operation.IdOperation == opjob.IdOperation && maOp.IdMachine == machine.IdMachine && operation.IdOperation == maOp.IdOperation
                        select new
                        {
                            IdJob = job.IdJob,
                            NameJob = job.NameJob,
                            IdOperation = operation.IdOperation,
-                           NameOperation = operation.OperationName
+                           NameOperation = operation.OperationName,
+                           IdMachine = machine.IdMachine,
+                           NameMachine = machine.MachineName,
+                           Time = machine.time,
                        };
 
-            var itens = jobs.OrderBy(j => j.IdJob).ToList(); ;
+            var itens = jobs.OrderBy(j => j.IdJob).ToList(); 
             return Ok(itens);
         }
 

@@ -62,7 +62,7 @@ namespace JobShopAPI.Controllers
                 
                
           
-            var itens = simulations.OrderBy(u => u.IdUser).ToList(); ;
+            var itens = simulations.OrderBy(u => u.IdUser).ToList();
             return Ok(itens);
 
 

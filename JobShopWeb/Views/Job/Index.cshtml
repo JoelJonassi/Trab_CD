@@ -6,7 +6,7 @@
 
 			</div>
 			<div class="col-6 text-right">
-				<a asp-action="Upsert" asp-controller = "Job" class="btn btn-info text-dark"><i class="fas fa-plus"></i> &nbsp; Inserir Operação na Tabela</a>
+				<a asp-action="Upsert" asp-controller = "Job" class="btn btn-info text-dark"><i class="fas fa-plus"></i> &nbsp; Insert Operation in Table</a>
 				<a asp-action="ExportToExcellProductionTable" asp-controller = "Job" class="btn btn-info text-dark"><i class="fas fa-plus"></i> &nbsp; Export Table to Excell</a>
 
 			</div>
@@ -19,7 +19,12 @@
 				<tr>
 					<th>IdJob</th>
 					<th>Job Name</th>
+					<th>Name Operation</th>
 					<th>IdOperation</th>
+					<th>MachineId</th>
+					<th>Machine Name</th>
+					<th>Time</th>
+					<th></th>
 					<th></th>
 	
 				</tr>
@@ -29,5 +34,5 @@
 		</div>
 </div>
 @section Scripts {
-	<script src="~/js/plan.js"></script>
+	<script src="~/js/Job.js"></script>
 }

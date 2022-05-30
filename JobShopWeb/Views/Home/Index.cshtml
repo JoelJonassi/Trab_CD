@@ -3,16 +3,15 @@
 <div class="container">
     <div class="row pb-4 backgroundWhite">
 
-        @foreach (var simulation in Model.JobList)
-        {
+
             <div class="container backgroundWhite pb-4">
                 <div class="card border">
                     <div class="card-header bg-dark text-light ml-0 row container">
                         <div class="col-12 col-md-6">
-                            <h1 class="text-warning">simulation.NameSimulation</h1>
+                            <h1 class="text-warning"></h1>
                         </div>
                         <div class="col-12 col-md-6 text-md-right">
-                            <h1 class="text-warning">Simulation Id : simulation.IdSimulation</h1>
+                            <h1 class="text-warning">List of Jobs, Operations & Machines</h1>
                         </div>
                     </div>
                     <div class="card-body">
@@ -21,34 +20,34 @@
                                 <div class="col-12 col-lg-8">
                                     <div class="row">
                                         <div class="col-12">
-                                            if (Model.SimulationList.Where(u => u.IdSimulation == simulation.IdSimulation).Count() > 0)
-                                            {
+                                             
+                                               
                                                 <table class="table table-striped" style="border:1px solid #808080 ">
                                                     <tr class="table-secondary">
-                                                        <th>
-                                                            Simulation Name
-                                                        </th>
-                                                        <th>
-                                                            Simulation Id
-                                                        </th>
                                                         <th>Job Id</th>
-                                                        <th>Machine Id</th>
-                                                        <th>Operation Id</th>
+                                                        <th>Name Job</th>
+                                                        <th>Name Operation</th>
+                                                        <th>Name Machine</th>
+                                                        <th>Time</th>
                                                     </tr>
-                                                    foreach (var simu in Model.SimulationList)
-                                                    {
+                                                   @foreach (var jobs in Model.JobList)
+                                                {
+                                                    
                                                 <tr>
-                                                    <td>simu.NameSimulation</td>
-                                                    <td>simu.IdSimulation</td>
+                                                    <td>@jobs.IdJob</td>
+                                                    <th>@jobs.NameJob</th>
+                                                    <th>@jobs.NameOperation</th>
+                                                     <td>@jobs.NameMachine</td>
+                                                    <td>@jobs.Time</td>
+                                                     
                                                     
                                                 </tr>
-                                                    }
+                                                }
+                                                
+                                                    
                                                 </table>
-                                            }
-                                            else
-                                            {
-                                                <p>No Simulation...</p>
-                                            }
+                                           
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -58,6 +57,6 @@
                     </div>
                 </div>
             </div>
-        }
+        
     </div>
 </div>

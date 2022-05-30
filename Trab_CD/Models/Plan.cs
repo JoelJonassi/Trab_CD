@@ -26,8 +26,8 @@ namespace JobShopAPI.Models
         [ForeignKey("IdMachine")]
         public Machine Machine { get; set; }
 
-        public int initialTime { get; set; }
+        public int InitialTime { get; set; }
 
-        public int finalTime { get; set; }
+        public int FinalTime { get; set; }
     }
 }

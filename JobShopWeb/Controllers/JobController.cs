@@ -21,6 +21,8 @@ namespace JobShopWeb.Controllers
         private readonly IOperationRepository _operation;
         private readonly IMachineRepository _machine;
 
+ 
+
 
         public JobController(IJobRepository job, IMachineRepository machine, IOperationRepository operation)
         {
@@ -28,44 +30,106 @@ namespace JobShopWeb.Controllers
             _machine = machine;
             _job = job;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index() {
-            ProductionTableServiceVM listOfParksAndTrails = new ProductionTableServiceVM()
+            ProductionTableServiceVM jobs = new ProductionTableServiceVM()
             {
                 JobList = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")),
             };
-            return View(listOfParksAndTrails);
-
-
+            return View(jobs);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Upsert(int? id)
+        {
+            Job obj = new Job();
+
+            if (id == null)
+            {
+                //this will be true for Insert/Create
+                return View(obj);
+            }
+            //Flow will come here for update
+            obj = await _job.GetAsync(UriAPI.JobsApiPath, id.GetValueOrDefault(), HttpContext.Session.GetString("JWToken"));
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            return View(obj);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Upsert(Job obj)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                if (obj.IdJob == 0)
+                {
+                    await _job.CreateAsync(UriAPI.JobsApiPath, obj, HttpContext.Session.GetString("JWToken"));
+                }
+                else
+                {
+                    await _job.UpdateAsync(UriAPI.JobsApiPath + obj.IdJob, obj, HttpContext.Session.GetString("JWToken"));
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(obj);
+            }
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> GetAllJobs()
         {
             return Json(new { data = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")) });
         }
 
-        public async Task<IActionResult> GetAllOperations()
-        {
-            return Json(new { data = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")) });
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Job"></param>
+        /// <param name="Operation"></param>
+        /// <returns></returns>
         public async Task<IActionResult> DoPlan(int Job, int Operation)
         {
             return Json(new { data = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")) });
         }
 
+        /// <summary>
+        /// Função para fazer Download do ficheiro da tabela de produção 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> ExportToExcellProductionTable()
         {
             // LicenseContext of the ExcelPackage class:
             ExcelPackage.LicenseContext = LicenseContext.Commercial;
 
-            // If you use EPPlus in a noncommercial context
-            // according to the Polyform Noncommercial license:
+            // Lincença não comercial para utilizar o excell
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            //Sua lista que está enviando apra View.
-
+          
             IEnumerable<Job> jobList = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken"));
-            //JobList = await _job.GetAllAsync(UriAPI.JobsApiPath, HttpContext.Session.GetString("JWToken")),
-           
+
             DataTable dt = new DataTable();
             using(var reader = ObjectReader.Create(jobList))
             {
@@ -88,7 +152,6 @@ namespace JobShopWeb.Controllers
                 contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 fileDownloadName: "ProductionTable.xlsx"
                 );
-                //return View(JobList);
 
         }
     }

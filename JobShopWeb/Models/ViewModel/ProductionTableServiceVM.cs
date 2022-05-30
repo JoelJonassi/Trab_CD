@@ -6,6 +6,6 @@ namespace JobShopWeb.Models.ViewModel
     public class ProductionTableServiceVM
     {
         public IEnumerable<Job> JobList { get; set; }
-        public IEnumerable<Plan> PlanList { get; set; }
+       
     }
 }

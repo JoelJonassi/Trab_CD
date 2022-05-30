@@ -6,8 +6,8 @@
 
 			</div>
 			<div class="col-6 text-right">
-				<a asp-action="Upsert" asp-controller = "Plan" class="btn btn-info text-dark"><i class="fas fa-plus"></i> &nbsp; Simulação na Tabela</a>
-				<a asp-action="ExportToExcellPlan" asp-controller = "Plan" class="btn btn-info text-dark"><i class="fas fa-plus"></i> &nbsp; Export Table to Excell</a>
+				<a asp-action="Upsert" asp-controller = "Plan" class="btn btn-info text-dark"><i class="fas fa-plus"></i> &nbsp; Insert Data in Table</a>
+				<a asp-action="ExportToExcellProductionPlan" asp-controller = "Plan" class="btn btn-info text-dark"><i class="fas fa-plus"></i> &nbsp; Export Table to Excell</a>
 
 			</div>
 		</div>
@@ -18,12 +18,11 @@
 			<thead>
 				<tr>
 
-					<th>Id Simulation</th>
-					<th>Simulation Name</th>
-					<th>Job Name</th>
-					<th>Operation Name</th>
-					<th>Machine Name</th>
-					<th>Time</th>
+					<th>Machine</th>
+					<th>Job</th>
+					<th>Op</th>
+					<th>Initial Time</th>
+					<th>Final Time</th>
 					<th></th>
 				</tr>
 

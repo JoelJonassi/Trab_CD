@@ -4,46 +4,40 @@ $(document).ready(function () {
     loadDataTable();
 });
 
-$("#btnExport").click(function (e) {
-    window.open('data:application/vnd.ms-excel,' + $('#tblData').html());
-    e.preventDefault();
-});
-
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url": "/job/GetAllJobs",
+            "url": "/Job/GetAllJobs",
             "type": "GET",
             "datatype": "json"
         },
+
         "columns": [
-            { "data": "idJob", "width": "20%" },
-            { "data": "nameJob", "width": "20%" },
-            { "data": "idOperation", "width": "20%" },
+            { "data": "idJob", "width": "10%" },
+            { "data": "nameJob", "width": "10%" },
+            { "data": "idOperation", "width": "10%" },
+            { "data": "nameOperation", "width": "10%" },
+            { "data": "idMachine", "width": "10%" },       
+            { "data": "nameMachine", "width": "10%" },
+            { "data": "time", "width": "10%" },
             
             {
                 "data": "idJob",
                 "render": function (data) {
-                    return `
-                                <div class="text-center">
+                    return `<div class="text-center">
 
-                                <a href="/Job/Upsert/${data}" class='btn btn-success text-white'
-                                    style='cursor:pointer;'> <i class="fa fa-eye" aria-hidden="true"></i></a>
-                                    &nbsp;
-                                <a href="/Job/Upsert/${data}" class='btn btn-success text-white'
+                                  <a href="/Job/Upsert/${data}" class='btn btn-success text-white'
                                     style='cursor:pointer;'> <i class='far fa-edit'></i></a>
                                     &nbsp;
                                 <a onclick=Delete("/Job/Delete/${data}") class='btn btn-danger text-white'
                                     style='cursor:pointer;'> <i class='far fa-trash-alt'></i></a>
                                 </div>
-                            `;
+                           `;
                 }, "width": "30%"
             }
         ]
     });
 }
-
-
 
 function Delete(url) {
     swal({
@@ -52,9 +46,8 @@ function Delete(url) {
         icon: "warning",
         buttons: true,
         dangerMode: true
-
     }).then((willDelete) => {
-        if (willDelete)
+        if (willDelete) {
             $.ajax({
                 type: 'DELETE',
                 url: url,
@@ -68,5 +61,6 @@ function Delete(url) {
                     }
                 }
             });
+        }
     });
 }

@@ -145,10 +145,11 @@ namespace JobShopAPI.Repository
        /// <param name="username"></param>
        /// <param name="password"></param>
        /// <returns></returns>
-        public User Register(string username, string password, string role)
+        public User Register(string username, string Name,  string password, string role)
         {
             User userObj = new User()
             {
+                Name = Name,
                 Username = username,
                 Password = password,
                 Role = role
@@ -199,7 +200,7 @@ namespace JobShopAPI.Repository
         /// <exception cref="NotImplementedException"></exception>
         public bool DeleteUser(User user)
         {
-                _db.Users.Remove(user);
+                _db.Users.Update(user);
                 return Save();
         }
 

@@ -21,11 +21,11 @@ namespace JobShopAPI.Repository.IRepository
 
         User Authenticate(string username, string password);
 
-        User Register(string username, string password, string role);
+        User Register(string username, string Name, string password, string role);
 
         bool DeleteUser(User user);
 
-        bool UpdateUser(string username);
+        bool UpdateUser(User user);
 
         bool ChangePasswordUser(string username, string oldPassword, string newPassword);
 

@@ -23,6 +23,7 @@ namespace JobShopAPI.Controllers
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _db;
 
+
         public OperationsController(ApplicationDbContext db, IMapper mapper, IMachineRepository machine, IOperationRepository operation, IMachineOperationRepository machineOperation)
         {
             _operation = operation;
@@ -93,52 +94,42 @@ namespace JobShopAPI.Controllers
 
 
         /// <summary>
-        /// Criar Operação e inserir uma máquina na operação
+        /// Criar Operação
         /// </summary>
-        /// <param name="simulationDto"></param>
+        /// <param name="operationDto"></param>
         /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(List<OperationDto>))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult CreateOperation([FromBody] CreateOperationDto simulationDto)
+        public IActionResult CreateOperation([FromBody] CreateOperationDto operationDto)
         {
-            if (simulationDto == null)
+            if (operationDto == null)
             {
                 return BadRequest(ModelState); //Model State contém todos erros que são encontrados
             }
-            if (_operation.OperationExists(simulationDto.OperationName)) // exists?
+            if (_operation.OperationExists(operationDto.OperationName)) 
             {
-                ModelState.AddModelError("", "Simulation Exists");
+                ModelState.AddModelError("", "Operation Exists");
                 return StatusCode(404, ModelState);
             }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var simulationObj = _mapper.Map<Operation>(simulationDto);
-            List<Machine> ma = new List<Machine>();
-           /* foreach(var machine in simulationObj.Machines)
+            var operationObj = _mapper.Map<Operation>(operationDto);
+            if (!_operation.CreateOperation(operationObj))
             {
-                var m = _machine.GetMachine(machine.IdMachine);
-                if (machine.IdMachine == m.IdMachine)
-                {
-                    ma.Add(m);
-                }
-            }*/
-            //simulationObj.Machines = ma;
-            if (!_operation.CreateOperation(simulationObj))
-            {
-                ModelState.AddModelError("", $"something went wrong when saving the record {simulationObj.IdOperation}");
+                ModelState.AddModelError("", $"something went wrong when saving the record {operationObj.IdOperation}");
                 return StatusCode(500, ModelState);
             }
-            return CreatedAtRoute("GetOperation", new { IdOperation = simulationObj.IdOperation }, simulationObj); //procura se foi criado e retorna 201 - OK
+            return CreatedAtRoute("GetOperation", new { IdOperation = operationObj.IdOperation }, operationObj); //procura se foi criado e retorna 201 - OK
         }
 
-       
+
         /// <summary>
-        /// Atualizar uma Simulação
+        ///  Inserir máquinas na operação
         /// </summary>
         /// <param name="operationId"></param>
         /// <param name="operationDto"></param>
@@ -154,20 +145,33 @@ namespace JobShopAPI.Controllers
                 return BadRequest(ModelState); //Model State contain all the errors if any encountered
             }
             var operationobj = _mapper.Map<Operation>(operationDto);  //Map objectt
+            if (!_operation.OperationExists(operationDto.IdOperation)) return BadRequest("Operação inserida não existe");
+            if (!_machine.MachineExists(operationDto.IdMachine)) return BadRequest("Máquina não existe");
 
             if (!_operation.UpdateOperation(operationobj))
             {
                 ModelState.AddModelError("", $"something went wrong when updating the record {operationobj.IdOperation}");
                 return StatusCode(500, ModelState);
             }
+            var operationMachineObj = new MachineOperation()
+            {
+                IdMachine = operationDto.IdMachine,
+                IdOperation = operationDto.IdOperation,
+            };
+            if (!_machineOperation.Create(operationMachineObj))
+            {
+                ModelState.AddModelError("", $"something went wrong when create machine for operation");
+                return StatusCode(500, ModelState);
+            }
             return NoContent();
         }
 
-       /// <summary>
-       /// Apagar uma Simulação
-       /// </summary>
-       /// <param name="operationId"></param>
-       /// <returns></returns>
+
+        /// <summary>
+        /// Apagar uma Simulação
+        /// </summary>
+        /// <param name="operationId"></param>
+        /// <returns></returns>
         [HttpDelete("{IdOperation:int}", Name = "DeleteOperation")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

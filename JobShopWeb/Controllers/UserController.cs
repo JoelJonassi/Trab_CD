@@ -40,10 +40,10 @@ namespace JobShopWeb.Controllers
         }
 
        public async Task <IActionResult> GetAllUsers()
-        {
+       {
             string AccountPath = "https://localhost:7032/api/Users";
-            return Json(new { data = await _user.GetAllAsync(AccountPath, HttpContext.Session.GetString("JWToken")) });
-        }
+            return Json(new { data = await _user.GetAllAsync(AccountPath, HttpContext.Session.GetString("JWToken"))});
+       }
 
        
         [Authorize(Roles = "Admin")]
@@ -53,11 +53,8 @@ namespace JobShopWeb.Controllers
 
             if (id == null)
             {
-                //this will be true for Insert/Create
                 return View(obj);
             }
-
-            //Flow will come here for update
 
             obj = await _user.GetAsync(UriAPI.AccountPath + "idUser?idUser=", id.GetValueOrDefault(), HttpContext.Session.GetString("JWToken"));
             if (obj == null)
@@ -80,12 +77,14 @@ namespace JobShopWeb.Controllers
             
             CreateUserDto userDto = new CreateUserDto()
             {
+                Name = obj.Name,
                 Username = obj.Username,
                 Password = obj.Password,     
                 Role = obj.Role,
             };
             UpdateUserDto userUpdateDto = new UpdateUserDto()
             {
+                Name=obj.Name,
                 Username = userUp.Username,
                 NewPassword = userUp.NewPassword,
                 OldPassword = userUp.OldPassword,
@@ -113,9 +112,13 @@ namespace JobShopWeb.Controllers
 
         [HttpDelete]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(DeleteUserDto userUp)
         {
-            var status = await _user.DeleteAsync(UriAPI.AccountPath + "Delete" + "?userId=", id, HttpContext.Session.GetString("JWToken"));
+            DeleteUserDto userUpdateDto = new DeleteUserDto()
+            {
+                Role = "x"
+            };
+            var status = await _user.DeleteAsync(UriAPI.AccountPath + "updates", userUpdateDto, HttpContext.Session.GetString("JWToken"));
             if (status)
             {
                 return Json(new { success = true, message = "Apagado com Sucesso" });

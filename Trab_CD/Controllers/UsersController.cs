@@ -100,7 +100,7 @@ namespace JobShopAPI.Controllers
             {
                 return BadRequest(new { message = "Username already exists" });
             }
-            var user = _userRepo.Register(model.Username, model.Password, model.Role);
+            var user = _userRepo.Register(model.Username, model.Name, model.Password, model.Role);
             if (user == null)
             {
                 return BadRequest(new { message = "Error while registering" });
@@ -146,6 +146,25 @@ namespace JobShopAPI.Controllers
         }
 
         /// <summary>
+        /// Colocar o utilizador inativo
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [HttpPatch("updates")]
+        public IActionResult UpdateUser([FromBody] DeleteUserDto model)
+        {
+
+            if (model.Role != null)
+            {
+                var obj = _mapper.Map<User>(model);
+                var user = _userRepo.UpdateUser(obj);
+                return Ok(obj);
+            }
+            return BadRequest(new { message = "Erro na alteração da palavra passe" });
+        }
+
+        /// <summary>
         /// Eliminar utilizador
         /// </summary>
         /// <param name="model"></param>
@@ -161,8 +180,9 @@ namespace JobShopAPI.Controllers
             else
             {
                 var userOb = _userRepo.GetUser(userId);
+                userOb.Role = "x";
 
-                if (!_userRepo.DeleteUser(userOb))
+                if (!_userRepo.UpdateUser(userOb))
                 {
                     ModelState.AddModelError("", $"something went wrong when deleting the record {userOb.Username}");
                     return StatusCode(500, ModelState);

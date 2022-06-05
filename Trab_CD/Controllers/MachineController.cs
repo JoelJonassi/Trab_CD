@@ -119,38 +119,6 @@ namespace JobShopAPI.Controllers
             return NoContent();
         }
 
-        /// <summary>
-        /// Insere operação na máquina
-        /// </summary>
-        /// <param name="machineDto"></param>
-        /// <returns></returns>
-        /*[HttpPut]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize]
-        public IActionResult InsertMachineInOperation([FromBody] CreateMachineDto machineDto)
-        {
-            var obj = _operation.GetOperation(IdOperation);
-
-            if (_machine.MachineExists(machineDto.MachineName))
-            {
-                if (_operation.OperationExists(machineDto.IdOperation))
-                {
-                    var machineObj = _mapper.Map<Machine>(machineDto);
-                    obj.Machines.Add(machineObj);
-                    _operation.UpdateOperation(obj);
-                    _machine.CreateMachine(machineObj);
-                    return Ok(machineDto);
-                }
-
-            }
-            return StatusCode(404, ModelState);
-        }*/
-
-
-
-
 
         /// <summary>
         /// Elimina uma máquina

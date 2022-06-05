@@ -25,14 +25,16 @@ namespace JobShopAPI.Controllers
         private readonly IJobRepository _job;
         private readonly IOperationRepository _operationRepo;
         private readonly ApplicationDbContext _db;
+        private readonly IJobSimulationRepository _JobSimu;
 
-        public SimulationsController(ApplicationDbContext db, IMapper mapper, ISimulationRepository sim, IJobRepository job, IOperationRepository operationRepo)
+        public SimulationsController(ApplicationDbContext db, IJobSimulationRepository JobSimu, IMapper mapper, ISimulationRepository sim, IJobRepository job, IOperationRepository operationRepo)
         {
             _simuRepo = sim;
             _mapper = mapper;
             _job = job;
             _operationRepo = operationRepo;
             _db = db;
+            _JobSimu = JobSimu;
 
         }
 
@@ -113,7 +115,6 @@ namespace JobShopAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateSimulation([FromBody] CreateSimulationDto simulationDto)
         {
-            //Dizer que a simulação pertence ao job
             if (simulationDto == null)
             {
                 return BadRequest(ModelState); //Model State contém todos erros que são encontrados
@@ -127,7 +128,7 @@ namespace JobShopAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
             var simulationObj = _mapper.Map<Simulation>(simulationDto);
 
             if (!_simuRepo.CreateSimulation(simulationObj))
@@ -135,31 +136,43 @@ namespace JobShopAPI.Controllers
                 ModelState.AddModelError("", $"something went wrong when saving the record {simulationObj.IdSimulation}");
                 return StatusCode(500, ModelState);
             }
-            return CreatedAtRoute("GetSimulation", new { IdSimulation = simulationObj.IdSimulation }, simulationObj); //procura se foi criado e retorna 201 - OK
+            return NoContent(); //procura se foi criado e retorna 201 - OK
         }
 
-        
+
         /// <summary>
-        /// Atualizar uma simulação
+        /// Insere job numa simulação
         /// </summary>
         /// <param name="simulationId"></param>
-        /// <param name="nationalParkDto"></param>
+        /// <param name="simulationDto"></param>
         /// <returns></returns>
         [HttpPatch("{IdSimulation:int}", Name = "UpdateSimulation")]
         [ProducesResponseType(204, Type = typeof(List<SimulationDto>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult UpdateSimlation(int simulationId, [FromBody] SimulationDto nationalParkDto)
+        public IActionResult UpdateSimlation(int simulationId, [FromBody] SimulationDto simulationDto)
         {
-            if (nationalParkDto == null || simulationId != nationalParkDto.IdSimulation)
+            if (simulationDto == null)
             {
                 return BadRequest(ModelState); //Model State contain all the errors if any encountered
             }
-            var nationalParkObj = _mapper.Map<Simulation>(nationalParkDto);  //Map objectt
+            if (!_job.JobExists(simulationDto.IdJob)) return BadRequest("Job inserido não existe");
+            if (!_simuRepo.SimulationExists(simulationId)) return BadRequest("Simulação não existe");
+
+            var nationalParkObj = _mapper.Map<Simulation>(simulationDto);  //Map object
 
             if (!_simuRepo.UpdateSimulation(nationalParkObj))
             {
                 ModelState.AddModelError("", $"something went wrong when updating the record {nationalParkObj.IdSimulation}");
+                return StatusCode(500, ModelState);
+            }
+            var jobSimuObj = new JobSimulation(){
+                IdJob = simulationDto.IdJob,
+                IdSimulation = simulationDto.IdSimulation
+            };
+            if (!_JobSimu.Create(jobSimuObj))
+            {
+                ModelState.AddModelError("", $"something went wrong when create job for simulation");
                 return StatusCode(500, ModelState);
             }
             return NoContent();
@@ -190,7 +203,6 @@ namespace JobShopAPI.Controllers
                     ModelState.AddModelError("", $"something went wrong when deleting the record {simulationObj.IdSimulation}");
                     return StatusCode(500, ModelState);
                 }
-
             }
             return NoContent();
         }

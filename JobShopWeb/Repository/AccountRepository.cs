@@ -90,11 +90,64 @@ namespace JobShopWeb.Repository
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="objToUpdate"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public async Task<bool> UpdateAsync(string url, UpdateUserDto objToUpdate, string token = "")
         {
             var request = new HttpRequestMessage(HttpMethod.Patch, url);
             if (objToUpdate != null)
             {
+                if(objToUpdate.OldPassword == null && objToUpdate.NewPassword == null)
+                {
+                    objToUpdate.NewPassword = "";
+                    objToUpdate.OldPassword = "";
+                    objToUpdate.Role = "x";
+                }
+                request.Content = new StringContent(JsonConvert.SerializeObject(objToUpdate), Encoding.UTF8, "application/json");
+            }
+            else
+            {
+                return false;
+            }
+            var client = _clientFactory.CreateClient();
+            if (token != null && token.Length != 0)
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+            HttpResponseMessage response = await client.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="objToUpdate"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+         public async Task<bool> DeleteAsync(string url, DeleteUserDto objToUpdate, string token = "")
+         {
+            var request = new HttpRequestMessage(HttpMethod.Patch, url);
+            if (objToUpdate != null)
+            {
+                if (objToUpdate.Role != "x")
+                {
+                    objToUpdate.Role = "x";
+                }
                 request.Content = new StringContent(JsonConvert.SerializeObject(objToUpdate), Encoding.UTF8, "application/json");
             }
             else

@@ -26,7 +26,7 @@
         </member>
         <member name="M:JobShopAPI.Controllers.JobsController.UpdateJob(System.Int32,JobShopAPI.Models.Dto.JobDto)">
             <summary>
-            Atualizar trabalho
+            Inserir Operação no Job
             </summary>
             <param name="jobId"></param>
             <param name="jobDto"></param>
@@ -82,14 +82,14 @@
         </member>
         <member name="M:JobShopAPI.Controllers.OperationsController.CreateOperation(JobShopAPI.Models.Dto.CreateOperationDto)">
             <summary>
-            Criar Operação e inserir uma máquina na operação
+            Criar Operação
             </summary>
-            <param name="simulationDto"></param>
+            <param name="operationDto"></param>
             <returns></returns>
         </member>
         <member name="M:JobShopAPI.Controllers.OperationsController.UpdateOperation(System.Int32,JobShopAPI.Models.Dto.OperationDto)">
             <summary>
-            Atualizar uma Simulação
+             Inserir máquinas na operação
             </summary>
             <param name="operationId"></param>
             <param name="operationDto"></param>
@@ -154,10 +154,10 @@
         </member>
         <member name="M:JobShopAPI.Controllers.SimulationsController.UpdateSimlation(System.Int32,JobShopAPI.Models.Dto.SimulationDto)">
             <summary>
-            Atualizar uma simulação
+            Insere job numa simulação
             </summary>
             <param name="simulationId"></param>
-            <param name="nationalParkDto"></param>
+            <param name="simulationDto"></param>
             <returns></returns>
         </member>
         <member name="M:JobShopAPI.Controllers.SimulationsController.DeleteSimulation(System.Int32)">
@@ -199,6 +199,14 @@
         <member name="M:JobShopAPI.Controllers.UsersController.ChangePasswordUser(JobShopAPI.Models.Dto.ChangePasswordUserDto)">
             <summary>
             Alterar palavra passe
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:JobShopAPI.Controllers.UsersController.UpdateUser(JobShopAPI.Models.Dto.DeleteUserDto)">
+            <summary>
+            Colocar o utilizador inativo
             </summary>
             <param name="model"></param>
             <returns></returns>
@@ -728,7 +736,7 @@
             <param name="password"></param>
             <returns></returns>
         </member>
-        <member name="M:JobShopAPI.Repository.UserRepository.Register(System.String,System.String,System.String)">
+        <member name="M:JobShopAPI.Repository.UserRepository.Register(System.String,System.String,System.String,System.String)">
             <summary>
             Função para registar um utilizador
             </summary>

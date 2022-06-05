@@ -15,5 +15,8 @@ namespace JobShopAPI.Repository.Interfaces
 
         Task<bool> UpdateAsync(string url, UpdateUserDto objToUpdate, string token = "");
 
+        Task<bool> DeleteAsync(string url, DeleteUserDto objToUpdate, string token = "");
+
+
     }
 }

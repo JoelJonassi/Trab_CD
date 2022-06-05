@@ -29,6 +29,8 @@ namespace JobShopAPI.Mappings
             CreateMap<User, LoginUserDto>().ReverseMap();
             CreateMap<User, ChangePasswordUserDto>().ReverseMap();
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, DeleteUserDto>().ReverseMap();
+            
 
             CreateMap<Plan, PlanDto>().ReverseMap();
             CreateMap<Plan, CreatePlanDto>().ReverseMap();

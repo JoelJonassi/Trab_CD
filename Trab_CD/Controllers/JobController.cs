@@ -24,9 +24,9 @@ namespace JobShopAPI.Controllers
         {
            _job = job;
            _mapper = mapper;
-            _operation = operation;
-            _jobOperation = jobOperation;
-            _db = db;
+           _operation = operation;
+           _jobOperation = jobOperation;
+           _db = db;
 
         }
 
@@ -118,24 +118,17 @@ namespace JobShopAPI.Controllers
                 return BadRequest(ModelState);
             }
             var jobObj = _mapper.Map<Job>(jobDto);
-            foreach (var operation in jobObj.JobOperation)
-            {
-
-                //if (jobObj.JobOperation != null) _operation.CreateOperation(operation);
-
-            }
             if (!_job.CreateJob(jobObj))
-            {
-               
-                ModelState.AddModelError("", $"something went wrong when saving the record {jobObj.IdJob}");
+            { 
+                ModelState.AddModelError("", $"something went wrong when saving the record {jobObj.NameJob}");
                 return StatusCode(500, ModelState);
             }
-            return CreatedAtRoute("GetJob", new { IdJob= jobObj.IdJob }, jobObj); //procura se foi criado e retorna 201 - OK
+            return CreatedAtRoute("GetJob", new { IdJob = jobObj.IdJob }, jobObj); //procura se foi criado e retorna 201 - OK
         }
 
 
         /// <summary>
-        /// Atualizar trabalho
+        /// Inserir Operação no Job
         /// </summary>
         /// <param name="jobId"></param>
         /// <param name="jobDto"></param>
@@ -151,15 +144,27 @@ namespace JobShopAPI.Controllers
             {
                 return BadRequest(ModelState); //Model State contain all the errors if any encountered
             }
-            var jobObj = _mapper.Map<Job>(jobDto);  //Map objectt
-
+            var jobObj = _mapper.Map<Job>(jobDto);  //Map object
+            if (!_job.JobExists(jobDto.IdJob)) return BadRequest("Job inserido não existe");
+            if (!_operation.OperationExists(jobDto.IdJob)) return BadRequest("Operação inserida não existe");
             if (!_job.UpdateJob(jobObj))
             {
                 ModelState.AddModelError("", $"something went wrong when updating the record {jobObj.IdJob}");
                 return StatusCode(500, ModelState);
             }
+            var jobOperationObj = new JobOperation()
+            {
+                IdJob = jobDto.IdJob,
+                IdOperation = jobDto.IdOperation,
+            };
+            if (!_jobOperation.Create(jobOperationObj))
+            {
+                ModelState.AddModelError("", $"something went wrong when create operation for job");
+                return StatusCode(500, ModelState);
+            }
             return NoContent();
         }
+
 
         /// <summary>
         /// Apagar trabalho
@@ -179,14 +184,12 @@ namespace JobShopAPI.Controllers
             }
             else
             {
-                var jobObkj = _job.GetJob(jobId);  //Map objectt
-
+                var jobObkj = _job.GetJob(jobId);  //Map object
                 if (!_job.DeleteJob(jobObkj))
                 {
                     ModelState.AddModelError("", $"something went wrong when deleting the record {jobObkj.NameJob}");
                     return StatusCode(500, ModelState);
                 }
-
             }
             return NoContent(); // if not receive any content the park was deleted.
         }

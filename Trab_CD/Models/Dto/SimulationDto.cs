@@ -12,10 +12,7 @@ namespace JobShopAPI.Models.Dto
         public string NameSimulation { get; set; }
 
         public int Id { get; set; }
-
-        [ForeignKey("Id")]
-        public User User { get; set; }
-
-        public List<Job> Job { get; set; }
+  
+        public int IdJob { get; set; }
     }
 }

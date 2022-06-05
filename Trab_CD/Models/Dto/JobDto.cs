@@ -12,7 +12,7 @@ namespace JobShopAPI.Models.Dto
         public string NameJob { get; set; }
 
 
-        public List<int> Operations { get; set; }
+        public int IdOperation { get; set; }
 
     }
 }

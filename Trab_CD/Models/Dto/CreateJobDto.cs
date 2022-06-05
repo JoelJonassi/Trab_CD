@@ -5,12 +5,7 @@ namespace JobShopAPI.Models.Dto
 {
     public class CreateJobDto
     {
-
-
-
         public string NameJob { get; set; }
-
-        public ICollection<JobOperation> JobOperation { get; set; }
 
     }
 }

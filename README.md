@@ -29,5 +29,3 @@ tarefas propostas. Não é necessária a inclusão de textos descritivos de conh
 redes ou de programação, mas é valorizada toda a informação relevante e pertinente que foi 
 usada para executar o trabalho, assim como a justificação das opções tomadas.
 
-O grupo deverá entregar o relatório em formato PDF, assim como os ficheiros de código fonte,
-num ficheiro comprimido ZIP
